@@ -3,15 +3,18 @@ import InputCharacterGroup from './InputCharacterGroup'
 
 type Inputs = {
   characterGroups: { label: string; characters: string }[]
+  pattern: string
 }
 
 function Form() {
   const form = useForm<Inputs>({
     defaultValues: {
       characterGroups: [
-        { label: 'C', characters: 'b m l' },
-        { label: 'B', characters: 'b m l' },
+        { label: 'C', characters: 'p t k m n s w l j' },
+        { label: 'V', characters: 'a e i o u' },
+        { label: 'N', characters: 'm n' },
       ],
+      pattern: '(C)V(N)',
     },
   })
 
@@ -29,7 +32,6 @@ function Form() {
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2 pb-8">
         <label className="text-xl">Characters</label>
-
         {fields.map((field, index) => (
           <div key={field.id}>
             <InputCharacterGroup
@@ -42,7 +44,6 @@ function Form() {
             />
           </div>
         ))}
-
         <button
           type="button"
           className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
@@ -52,12 +53,13 @@ function Form() {
         </button>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2 pb-8">
+        <label className="text-xl">Pattern</label>
         <input
           type="text shadow"
-          placeholder="test"
-          defaultValue="text"
+          placeholder="(C)V(N)"
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
+          {...register('pattern')}
         />
       </div>
 
