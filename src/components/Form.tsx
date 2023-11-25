@@ -1,5 +1,6 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
+import InputCharacterGroup from './InputCharacterGroup'
 
 export type Inputs = {
   characterGroups: { label: string; characters: string }[]
@@ -29,32 +30,12 @@ function Form() {
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-2 pb-8">
         {fields.map((field, index) => (
-          <div className="flex flex-row items-center gap-2">
-            <select
-              className="border border-neutral-300 p-2 shadow-sm"
-              {...register(`characterGroups.${index}.label`)}
-            >
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-            </select>
-            <input
-              type="text shadow"
-              placeholder="test"
-              defaultValue="text"
-              className="border border-neutral-300 p-2 flex-grow shadow-sm"
-              {...register(`characterGroups.${index}.characters`)}
-            />
-            {fields.length > 1 && (
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="p-2 bg-red-600 shadow-sm"
-              >
-                <TrashIcon className="w-6 text-background" />
-              </button>
-            )}
-          </div>
+          <InputCharacterGroup
+            labelRegister={register(`characterGroups.${index}.label`)}
+            charactersRegister={register(`characterGroups.${index}.characters`)}
+            remove={() => remove(index)}
+            fieldsLength={fields.length}
+          />
         ))}
 
         <button
