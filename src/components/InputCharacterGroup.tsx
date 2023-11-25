@@ -35,7 +35,7 @@ function InputCharacterGroup({
         <button
           type="button"
           onClick={() => remove()}
-          className="p-2 bg-red-600 shadow-sm"
+          className="p-2 bg-red-600 shadow-sm rounded"
         >
           <TrashIcon className="w-6 text-background" />
         </button>

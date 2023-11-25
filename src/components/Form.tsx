@@ -52,7 +52,8 @@ function Form() {
         </button>
       </div>
 
-      <div>
+      <div className="flex flex-col gap-2 pb-8">
+        <label className="text-xl">Pattern</label>
         <input
           type="text shadow"
           placeholder="test"
@@ -63,7 +64,7 @@ function Form() {
 
       <div>
         <input
-          className="bg-primary px-4 py-2 rounded cursor-pointer shadow-sm"
+          className="bg-primary text-background px-4 py-2 rounded cursor-pointer shadow-sm"
           type="submit"
           value="Generate"
         />
