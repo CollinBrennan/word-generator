@@ -1,23 +1,19 @@
-import {
-  UseFieldArrayRemove,
-  UseFormRegister,
-  UseFormRegisterReturn,
-} from 'react-hook-form'
-import { Inputs } from './Form'
+import { UseFieldArrayRemove, UseFormRegisterReturn } from 'react-hook-form'
 import { TrashIcon } from '@heroicons/react/24/outline'
+import alphabet from '../utils/alphabet'
 
 type InputCharacterGroupProps = {
   labelRegister: UseFormRegisterReturn<`characterGroups.${number}.label`>
   charactersRegister: UseFormRegisterReturn<`characterGroups.${number}.characters`>
   remove: UseFieldArrayRemove
-  fieldsLength: number
+  showRemoveButton: boolean
 }
 
 function InputCharacterGroup({
   labelRegister,
   charactersRegister,
   remove,
-  fieldsLength,
+  showRemoveButton,
 }: InputCharacterGroupProps) {
   return (
     <div className="flex flex-row items-center gap-2">
@@ -25,18 +21,17 @@ function InputCharacterGroup({
         className="border border-neutral-300 p-2 shadow-sm"
         {...labelRegister}
       >
-        <option>A</option>
-        <option>B</option>
-        <option>C</option>
+        {alphabet.map((letter) => (
+          <option value={letter}>{letter}</option>
+        ))}
       </select>
       <input
         type="text shadow"
-        placeholder="test"
-        defaultValue="text"
+        placeholder="a e i o u ..."
         className="border border-neutral-300 p-2 flex-grow shadow-sm"
         {...charactersRegister}
       />
-      {fieldsLength > 1 && (
+      {showRemoveButton && (
         <button
           type="button"
           onClick={() => remove()}
