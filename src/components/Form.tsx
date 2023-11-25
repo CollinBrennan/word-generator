@@ -65,7 +65,7 @@ function Form() {
 
       <div>
         <input
-          className="bg-primary px-4 py-2 rounded cursor-pointer shadow-sm"
+          className="bg-primary text-background px-4 py-2 rounded cursor-pointer shadow-sm"
           type="submit"
           value="Generate"
         />
