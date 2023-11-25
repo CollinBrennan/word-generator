@@ -16,26 +16,25 @@ function Navbar() {
   }
 
   return (
-    <div className="flex items-center justify-center bg-primary text-text">
-      <div className="flex items-center justify-between w-full max-w-screen-xl p-4">
-        <div className="flex flex-row gap-4">
-          <nav className="flex flex-row items-center">
-            {links.map((link) => (
-              <a
-                className={
-                  'cursor-pointer py-2 px-4 rounded' +
-                  (currentPage === link.path
-                    ? ' backdrop-brightness-50 text-background'
-                    : '')
-                }
-                onClick={() => handleNavigate(link.path)}
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-        </div>
-        <div>
+    <div className="flex items-center justify-center bg-primary text-text shadow">
+      <div className="flex items-center justify-between w-full max-w-screen-xl p-2">
+        <nav className="flex flex-row items-center">
+          {links.map((link) => (
+            <a
+              key={link.name}
+              className={
+                'cursor-pointer py-2 px-4 rounded' +
+                (currentPage === link.path
+                  ? ' backdrop-brightness-50 text-background'
+                  : '')
+              }
+              onClick={() => handleNavigate(link.path)}
+            >
+              {link.name}
+            </a>
+          ))}
+        </nav>
+        <div className="p-2">
           <a href="https://github.com/CollinBrennan" target="_blank">
             Github
           </a>
