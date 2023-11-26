@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Form, { Inputs } from '../components/Form'
-import { ChevronDownIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline'
 
 function Home() {
   const [output, setOutput] = useState<Inputs>()
@@ -12,18 +12,13 @@ function Home() {
             <Form setOutput={setOutput} />
           </div>
 
-          <div className="md:w-1/3 flex flex-col gap-4">
-            <div className="bg-secondary/50 rounded-xl shadow flex justify-between p-4">
-              IPA Chart <ChevronDownIcon className="h-6" />
-            </div>
-            <div className="bg-primary rounded-xl shadow p-4">
+          <div className="md:w-1/3">
+            <div className="bg-primary/25 rounded-xl shadow p-4">
               <p className="font-bold">Words: </p>
               <p className="overflow-hidden">
                 {output?.pattern ?? (
                   <span className="italic">
-                    Click generate to see word listdasdasdasdasdsa
-                    dsa.listdasdasdasdasdsadasdasdasdasdasdasddsa.listdasdasd
-                    dasdsadasdasdasda.listdasdasdatdasdsa.listdasdasdasdasdsadasdasdasdasdasdasddsa.
+                    Click generate to see word list.
                   </span>
                 )}
               </p>
@@ -31,6 +26,12 @@ function Home() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="absolute bottom-0 max-w-screen-xl">
+        <button className="font-bold bg-secondary/25 w-96 py-2 rounded-t-xl">
+          IPA Chart <ChevronUpIcon className="inline h-6" />
+        </button>
       </div>
     </div>
   )

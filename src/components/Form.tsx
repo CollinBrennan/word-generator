@@ -30,7 +30,7 @@ function Form({ setOutput }: any) {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-2 pb-8">
+      <div className="flex flex-col gap-2 pb-4">
         <label className="text-xl">Characters</label>
         {fields.map((field, index) => (
           <div key={field.id}>
