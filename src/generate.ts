@@ -1,23 +1,48 @@
 import { Inputs } from './components/Form'
 
-export function generate(formData: Inputs): string {
-  const { charGroups, pattern } = parseFormData(formData)
-  let parsedPattern = pattern
+type ParsedFormData = {
+  charGroups: Record<string, string[]>
+  pattern: string
+  numWords: number
+  syllablesMin: number
+  syllablesMax: number
+}
+
+export function generateWordList(formData: Inputs): string[] {
+  const wordList: string[] = []
+  const data = parseFormData(formData)
+
+  for (let i = 0; i < data.numWords; i++) {
+    wordList.push(generateWord(data))
+  }
+
+  return wordList
+}
+
+function generateWord(data: ParsedFormData): string {
+  const { charGroups, pattern, syllablesMin, syllablesMax } = data
+  let parsedPattern = ''
   let word = ''
 
+  const numSyllables = randInt(syllablesMin, syllablesMax)
+
   // Parse pattern
-  const parensRegex = new RegExp('\\(([^(]*?)\\)')
-  while (parensRegex.test(parsedPattern)) {
-    const charsInParens = parensRegex.exec(parsedPattern)[1]
-    parsedPattern = parsedPattern.replace(
-      parensRegex,
-      randBool() ? charsInParens : ''
-    )
+  const parensRegex = /\(([^(]*?)\)/
+  for (let i = 0; i < numSyllables; i++) {
+    let syllablePattern = pattern
+    while (parensRegex.test(syllablePattern)) {
+      const charsInParens = parensRegex.exec(syllablePattern)![1]
+      syllablePattern = syllablePattern.replace(
+        parensRegex,
+        randBool() ? charsInParens : ''
+      )
+    }
+    parsedPattern += syllablePattern
   }
 
   // Convert pattern to characters
   for (let char of parsedPattern) {
-    if (charGroups[char] && charGroups[char].length > 0) {
+    if (charGroups[char]) {
       word += randString(charGroups[char])
     } else {
       word += char
@@ -27,17 +52,29 @@ export function generate(formData: Inputs): string {
   return word
 }
 
-function parseFormData(formData: Inputs) {
+function parseFormData(formData: Inputs): ParsedFormData {
   const charGroups: Record<string, string[]> = {}
   for (let charGroup of formData.characterGroups) {
     charGroups[charGroup.label] = charGroup.characters.split(/\s/)
   }
 
-  return { charGroups, pattern: formData.pattern }
+  const { numWords, syllablesMin, syllablesMax } = formData
+
+  return {
+    charGroups,
+    pattern: formData.pattern,
+    numWords,
+    syllablesMin,
+    syllablesMax,
+  }
 }
 
 function randBool() {
   return Math.random() > 0.5
+}
+
+function randInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
 function randString(array: string[]) {
