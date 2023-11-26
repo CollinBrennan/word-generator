@@ -9,7 +9,7 @@ export type Inputs = {
   syllablesMax: number
 }
 
-function Form({ setOutput }: any) {
+function Form({ setFormData }: any) {
   const form = useForm<Inputs>({
     defaultValues: {
       characterGroups: [
@@ -32,42 +32,44 @@ function Form({ setOutput }: any) {
     control,
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => setOutput(data)
+  const onSubmit: SubmitHandler<Inputs> = (data) => setFormData(data)
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-2 pb-8">
-        <label className="text-xl">Words</label>
-        <input
-          type="number"
-          placeholder="50"
-          className="border border-neutral-300 p-2 flex-grow shadow-sm"
-          {...register('numWords')}
-        />
-      </div>
+      <div className="flex flex-row w-full gap-2 pb-8">
+        <div className="flex flex-col w-1/3 gap-2">
+          <label className="text-lg">Words</label>
+          <input
+            type="number"
+            placeholder="50"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('numWords', { valueAsNumber: true })}
+          />
+        </div>
 
-      <div className="flex flex-col gap-2 pb-8">
-        <label className="text-xl">Minimum Syllables</label>
-        <input
-          type="number"
-          placeholder="1"
-          className="border border-neutral-300 p-2 flex-grow shadow-sm"
-          {...register('syllablesMin')}
-        />
-      </div>
+        <div className="flex flex-col gap-2 w-1/3">
+          <label className="text-lg break">Min Syllables</label>
+          <input
+            type="number"
+            placeholder="1"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('syllablesMin', { valueAsNumber: true })}
+          />
+        </div>
 
-      <div className="flex flex-col gap-2 pb-8">
-        <label className="text-xl">Maximum Syllables</label>
-        <input
-          type="number"
-          placeholder="3"
-          className="border border-neutral-300 p-2 flex-grow shadow-sm"
-          {...register('syllablesMax')}
-        />
+        <div className="flex flex-col gap-2 w-1/3">
+          <label className="text-lg">Max Syllables</label>
+          <input
+            type="number"
+            placeholder="3"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('syllablesMax', { valueAsNumber: true })}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 pb-4">
-        <label className="text-xl">Characters</label>
+        <label className="text-lg">Characters</label>
         {fields.map((field, index) => (
           <div key={field.id}>
             <InputCharacterGroup
@@ -90,7 +92,7 @@ function Form({ setOutput }: any) {
       </div>
 
       <div className="flex flex-col gap-2 pb-8">
-        <label className="text-xl">Pattern</label>
+        <label className="text-lg">Pattern</label>
         <input
           type="text"
           placeholder="(C)V(N)"
