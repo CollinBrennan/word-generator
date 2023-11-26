@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import Form, { Inputs } from '../components/Form'
 import { ChevronUpIcon } from '@heroicons/react/24/outline'
-import { generate } from '../generate'
+import { generateWordList } from '../generate'
 
 function Home() {
   const [formData, setFormData] = useState<Inputs>()
-  const wordList = formData ? generate(formData) : null
+  const wordList = formData ? generateWordList(formData) : null
 
   return (
     <div className="flex justify-center">
@@ -18,13 +18,13 @@ function Home() {
           <div className="md:w-1/3">
             <div className="bg-primary/25 rounded-xl shadow p-4">
               <p className="font-bold">Words: </p>
-              <p className="overflow-hidden">
-                {wordList ?? (
-                  <span className="italic">
-                    Click generate to see word list.
-                  </span>
+              <div className="max-h-[50vh] overflow-scroll">
+                {wordList ? (
+                  wordList.map((word) => <p>{word}</p>)
+                ) : (
+                  <p className="italic">Click generate to see word list.</p>
                 )}
-              </p>
+              </div>
             </div>
           </div>
         </div>
