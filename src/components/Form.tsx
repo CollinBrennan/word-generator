@@ -4,6 +4,9 @@ import InputCharacterGroup from './InputCharacterGroup'
 export type Inputs = {
   characterGroups: { label: string; characters: string }[]
   pattern: string
+  numWords: number
+  syllablesMin: number
+  syllablesMax: number
 }
 
 function Form({ setOutput }: any) {
@@ -15,6 +18,9 @@ function Form({ setOutput }: any) {
         { label: 'N', characters: 'm n' },
       ],
       pattern: '(C)V(N)',
+      numWords: 50,
+      syllablesMin: 1,
+      syllablesMax: 3,
     },
   })
 
@@ -30,6 +36,36 @@ function Form({ setOutput }: any) {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2 pb-8">
+        <label className="text-xl">Words</label>
+        <input
+          type="number"
+          placeholder="50"
+          className="border border-neutral-300 p-2 flex-grow shadow-sm"
+          {...register('numWords')}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 pb-8">
+        <label className="text-xl">Minimum Syllables</label>
+        <input
+          type="number"
+          placeholder="1"
+          className="border border-neutral-300 p-2 flex-grow shadow-sm"
+          {...register('syllablesMin')}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 pb-8">
+        <label className="text-xl">Maximum Syllables</label>
+        <input
+          type="number"
+          placeholder="3"
+          className="border border-neutral-300 p-2 flex-grow shadow-sm"
+          {...register('syllablesMax')}
+        />
+      </div>
+
       <div className="flex flex-col gap-2 pb-4">
         <label className="text-xl">Characters</label>
         {fields.map((field, index) => (
