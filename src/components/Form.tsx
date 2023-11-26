@@ -1,12 +1,12 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import InputCharacterGroup from './InputCharacterGroup'
 
-type Inputs = {
+export type Inputs = {
   characterGroups: { label: string; characters: string }[]
   pattern: string
 }
 
-function Form() {
+function Form({ setOutput }: any) {
   const form = useForm<Inputs>({
     defaultValues: {
       characterGroups: [
@@ -26,7 +26,7 @@ function Form() {
     control,
   })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = (data) => setOutput(data)
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -46,8 +46,8 @@ function Form() {
         ))}
         <button
           type="button"
-          className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
-          onClick={() => append({ label: 'A', characters: 'q z l' })}
+          className="bg-secondary/50 px-4 py-2 rounded cursor-pointer shadow"
+          onClick={() => append({ label: 'A', characters: '' })}
         >
           Add Character Group
         </button>
@@ -56,7 +56,7 @@ function Form() {
       <div className="flex flex-col gap-2 pb-8">
         <label className="text-xl">Pattern</label>
         <input
-          type="text shadow"
+          type="text"
           placeholder="(C)V(N)"
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
           {...register('pattern')}
@@ -65,7 +65,7 @@ function Form() {
 
       <div>
         <input
-          className="bg-primary text-background px-4 py-2 rounded cursor-pointer shadow-sm"
+          className="bg-primary text-text px-4 py-2 rounded cursor-pointer shadow-sm"
           type="submit"
           value="Generate"
         />

@@ -7,11 +7,11 @@ export default {
     },
     extend: {
       colors: {
-        text: '#06082d',
+        text: '#000000',
         background: '#ffffff',
-        primary: '#9ca0e7',
-        secondary: '#ced0f3',
-        accent: '#3037c5',
+        primary: '#78f2f2',
+        secondary: '#fcc5c5',
+        accent: '#895858',
       },
     },
   },
