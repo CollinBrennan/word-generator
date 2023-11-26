@@ -12,13 +12,13 @@ function Home() {
       <div className="w-full max-w-screen-xl justify-center flex pt-8">
         <div className="flex flex-col md:flex-row w-full p-2 gap-4">
           <div className="rounded-xl md:w-2/3">
-            <Form setOutput={setFormData} />
+            <Form setFormData={setFormData} />
           </div>
 
           <div className="md:w-1/3">
             <div className="bg-primary/25 rounded-xl shadow p-4">
               <p className="font-bold">Words: </p>
-              <div className="max-h-[50vh] overflow-scroll">
+              <div className="max-h-[50vh] overflow-y-scroll">
                 {wordList ? (
                   wordList.map((word) => <p>{word}</p>)
                 ) : (
