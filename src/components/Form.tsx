@@ -9,6 +9,14 @@ export type Inputs = {
   syllablesMax: number
 }
 
+const clearedFormValues: Inputs = {
+  characterGroups: [{ label: 'A', characters: '' }],
+  pattern: '',
+  numWords: 50,
+  syllablesMin: 1,
+  syllablesMax: 3,
+}
+
 function Form({ setFormData }: any) {
   const form = useForm<Inputs>({
     defaultValues: {
@@ -24,7 +32,7 @@ function Form({ setFormData }: any) {
     },
   })
 
-  const { register, control, handleSubmit, formState } = form
+  const { register, control, handleSubmit, formState, reset } = form
   const { errors } = formState
 
   const { fields, append, remove } = useFieldArray({
@@ -34,8 +42,27 @@ function Form({ setFormData }: any) {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => setFormData(data)
 
+  function handleClear() {
+    reset(clearedFormValues)
+  }
+
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex justify-end pb-8 gap-2">
+        <button
+          onClick={handleClear}
+          type="button"
+          className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
+        >
+          Clear
+        </button>
+        <input
+          className="bg-primary px-4 py-2 rounded cursor-pointer shadow"
+          type="submit"
+          value="Generate"
+        />
+      </div>
+
       <div className="grid grid-cols-3 gap-2 pb-4">
         <div className="flex flex-col gap-2">
           <label>Words</label>
@@ -84,7 +111,7 @@ function Form({ setFormData }: any) {
         ))}
         <button
           type="button"
-          className="bg-secondary/50 px-4 py-2 rounded cursor-pointer shadow"
+          className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
           onClick={() => append({ label: 'A', characters: '' })}
         >
           Add Character Group
@@ -98,14 +125,6 @@ function Form({ setFormData }: any) {
           placeholder="(C)V(N)"
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
           {...register('pattern')}
-        />
-      </div>
-
-      <div>
-        <input
-          className="bg-primary px-4 py-2 rounded cursor-pointer shadow-sm"
-          type="submit"
-          value="Generate"
         />
       </div>
     </form>
