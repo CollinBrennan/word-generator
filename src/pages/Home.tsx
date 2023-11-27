@@ -2,18 +2,39 @@ import { useState } from 'react'
 import Form, { Inputs } from '../components/Form'
 import { generateWordList } from '../generate'
 import IPAChart from '../components/IPAChart'
+import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 function Home() {
+  const [isChartShowing, setIsChartShowing] = useState(false)
   const [formData, setFormData] = useState<Inputs>()
   const wordList = formData ? generateWordList(formData) : null
 
   return (
     <div className="flex">
       <div className="flex flex-col bg-secondary/50">
-        <h1 className="bg-secondary p-4">IPA Chart</h1>
-        <div className="h-[calc(100vh-7rem)] overflow-y-scroll p-4">
-          <IPAChart />
-        </div>
+        {isChartShowing ? (
+          <>
+            <div className="bg-secondary p-4 flex justify-between">
+              <h1>IPA Chart</h1>
+              <button onClick={() => setIsChartShowing(false)}>
+                <XMarkIcon className="h-6" />
+              </button>
+            </div>
+
+            <div className="h-[calc(100vh-7rem)] overflow-y-scroll p-4">
+              <IPAChart />
+            </div>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setIsChartShowing(true)}
+              className="bg-secondary p-4"
+            >
+              <ListBulletIcon className="h-6" />
+            </button>
+          </>
+        )}
       </div>
 
       <div className="flex flex-col bg-background flex-grow">
@@ -23,7 +44,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col bg-primary/50 w-1/5">
+      <div className="flex flex-col bg-primary/50 w-1/4">
         <h1 className="bg-primary p-4">Words</h1>
         <div className="h-[calc(100vh-7rem)] overflow-y-scroll p-4">
           <p className="whitespace-pre-line">
