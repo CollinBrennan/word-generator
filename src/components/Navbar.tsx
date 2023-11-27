@@ -17,7 +17,7 @@ function Navbar() {
 
   return (
     <div className="flex items-center justify-center text-text bg-primary shadow">
-      <div className="flex items-center justify-between max-w-screen-xl w-full p-2">
+      <div className="flex items-center justify-between w-full p-2">
         <nav className="flex flex-row items-center">
           {links.map((link) => (
             <a

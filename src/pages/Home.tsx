@@ -9,23 +9,21 @@ function Home() {
 
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-screen-xl justify-center flex">
+      <div className="w-full justify-center flex">
         <div className="flex flex-col md:flex-row w-full">
-          <div className="h-[calc(100vh-72px)] w-1/4">
-            <div className="h-full bg-primary/25 p-4 shadow overflow-y-scroll">
-              <div>
-                Words:
-                {wordList ? (
-                  wordList.map((word) => <p>{word}</p>)
-                ) : (
-                  <p className="italic">Click generate to see word list.</p>
-                )}
-              </div>
-            </div>
-          </div>
-
           <div className="rounded-xl p-4 md:w-3/4">
             <Form setFormData={setFormData} />
+          </div>
+
+          <div className="h-[calc(100vh-4.5rem)] w-1/4 bg-primary/25 p-4 shadow overflow-y-scroll">
+            <p className="whitespace-pre-line">
+              <p>Words:</p>
+              {wordList ? (
+                wordList.join('\n')
+              ) : (
+                <span className="italic">Click generate to see word list.</span>
+              )}
+            </p>
           </div>
         </div>
       </div>
