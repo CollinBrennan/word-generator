@@ -7,42 +7,38 @@ const links = [
 ]
 
 function Navbar() {
-  const [currentPage, setCurrentPage] = useState('/')
+  const [currentPath, setCurrentPath] = useState('/')
   const navigate = useNavigate()
 
   function handleNavigate(path: string) {
-    setCurrentPage(path)
+    setCurrentPath(path)
     navigate(path)
   }
 
   return (
-    <div className="flex items-center justify-center text-background bg-neutral-700">
-      <div className="flex items-center justify-between w-full px-2">
-        <nav className="flex flex-row items-center">
+    <div className="bg-neutral-700 text-background p-2">
+      <nav className="flex justify-between items-center">
+        <div className="flex">
           {links.map((link) => (
             <a
-              key={link.name}
               className={
-                'cursor-pointer py-2 px-4 rounded' +
-                (currentPage === link.path
-                  ? ' backdrop-brightness-50 text-background'
-                  : '')
+                'px-4 py-2 rounded cursor-pointer' +
+                (currentPath === link.path ? ' backdrop-brightness-50' : '')
               }
               onClick={() => handleNavigate(link.path)}
             >
               {link.name}
             </a>
           ))}
-        </nav>
-
+        </div>
         <a
-          className="p-4"
+          className="px-4"
           href="https://github.com/CollinBrennan"
           target="_blank"
         >
           Github
         </a>
-      </div>
+      </nav>
     </div>
   )
 }

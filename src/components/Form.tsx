@@ -36,38 +36,40 @@ function Form({ setFormData }: any) {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col w-1/3 gap-2">
-        <label className="text-lg">Words</label>
-        <input
-          type="number"
-          placeholder="50"
-          className="border border-neutral-300 p-2 shadow-sm"
-          {...register('numWords', { valueAsNumber: true })}
-        />
-      </div>
+      <div className="grid grid-cols-3 gap-2 pb-4">
+        <div className="flex flex-col gap-2">
+          <label>Words</label>
+          <input
+            type="number"
+            placeholder="50"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('numWords', { valueAsNumber: true })}
+          />
+        </div>
 
-      <div className="flex flex-col gap-2 w-1/3">
-        <label className="text-lg break">Min Syllables</label>
-        <input
-          type="number"
-          placeholder="1"
-          className="border border-neutral-300 p-2 shadow-sm"
-          {...register('syllablesMin', { valueAsNumber: true })}
-        />
-      </div>
+        <div className="flex flex-col gap-2">
+          <label>Min Syllables</label>
+          <input
+            type="number"
+            placeholder="1"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('syllablesMin', { valueAsNumber: true })}
+          />
+        </div>
 
-      <div className="flex flex-col gap-2 w-1/3">
-        <label className="text-lg">Max Syllables</label>
-        <input
-          type="number"
-          placeholder="3"
-          className="border border-neutral-300 p-2 shadow-sm"
-          {...register('syllablesMax', { valueAsNumber: true })}
-        />
+        <div className="flex flex-col gap-2">
+          <label>Max Syllables</label>
+          <input
+            type="number"
+            placeholder="3"
+            className="border border-neutral-300 p-2 shadow-sm"
+            {...register('syllablesMax', { valueAsNumber: true })}
+          />
+        </div>
       </div>
 
       <div className="flex flex-col gap-2 pb-4">
-        <label className="text-lg">Characters</label>
+        <label>Characters</label>
         {fields.map((field, index) => (
           <div key={field.id}>
             <InputCharacterGroup
@@ -90,7 +92,7 @@ function Form({ setFormData }: any) {
       </div>
 
       <div className="flex flex-col gap-2 pb-8">
-        <label className="text-lg">Pattern</label>
+        <label>Pattern</label>
         <input
           type="text"
           placeholder="(C)V(N)"
@@ -101,7 +103,7 @@ function Form({ setFormData }: any) {
 
       <div>
         <input
-          className="bg-primary text-text px-4 py-2 rounded cursor-pointer shadow-sm"
+          className="bg-primary px-4 py-2 rounded cursor-pointer shadow-sm"
           type="submit"
           value="Generate"
         />
