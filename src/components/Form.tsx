@@ -17,19 +17,21 @@ const clearedFormValues: Inputs = {
   syllablesMax: 3,
 }
 
+const defaultFormValues: Inputs = {
+  characterGroups: [
+    { label: 'C', characters: 'p t k m n s w l j' },
+    { label: 'V', characters: 'a e i o u' },
+    { label: 'N', characters: 'm n' },
+  ],
+  pattern: '(C)V(N)',
+  numWords: 50,
+  syllablesMin: 1,
+  syllablesMax: 3,
+}
+
 function Form({ setFormData }: any) {
   const form = useForm<Inputs>({
-    defaultValues: {
-      characterGroups: [
-        { label: 'C', characters: 'p t k m n s w l j' },
-        { label: 'V', characters: 'a e i o u' },
-        { label: 'N', characters: 'm n' },
-      ],
-      pattern: '(C)V(N)',
-      numWords: 50,
-      syllablesMin: 1,
-      syllablesMax: 3,
-    },
+    defaultValues: defaultFormValues,
   })
 
   const { register, control, handleSubmit, formState, reset } = form
@@ -42,15 +44,18 @@ function Form({ setFormData }: any) {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => setFormData(data)
 
-  function handleClear() {
-    reset(clearedFormValues)
-  }
-
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-end pb-8 gap-2">
         <button
-          onClick={handleClear}
+          onClick={() => reset(defaultFormValues)}
+          type="button"
+          className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
+        >
+          Restore default
+        </button>
+        <button
+          onClick={() => reset(clearedFormValues)}
           type="button"
           className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
         >
