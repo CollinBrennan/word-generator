@@ -20,7 +20,7 @@ function Home() {
                 <XMarkIcon className="w-6" />
               </button>
             </div>
-            <div className="h-[calc(100vh-7rem)] overflow-y-auto p-4">
+            <div className="h-[calc(100vh-7rem)] overflow-auto p-4">
               <IPAChart />
             </div>
           </>
@@ -43,7 +43,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col bg-primary/25 md:w-1/4">
+      <div className="flex flex-col bg-primary/25 md:w-1/3">
         <h1 className="bg-primary p-4">Words</h1>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
           <p className="whitespace-pre-line">

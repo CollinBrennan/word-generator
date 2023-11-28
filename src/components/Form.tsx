@@ -52,7 +52,7 @@ function Form({ setFormData }: any) {
           type="button"
           className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
         >
-          Restore default
+          Default
         </button>
         <button
           onClick={() => reset(clearedFormValues)}

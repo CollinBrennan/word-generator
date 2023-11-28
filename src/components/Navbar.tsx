@@ -31,13 +31,16 @@ function Navbar() {
             </a>
           ))}
         </div>
-        <a
-          className="px-4"
-          href="https://github.com/CollinBrennan"
-          target="_blank"
-        >
-          Github
-        </a>
+        <h2 className="text-sm text-neutral-400 px-2">
+          made by{' '}
+          <a
+            className="text-background"
+            href="https://github.com/CollinBrennan"
+            target="_blank"
+          >
+            Collin&nbsp;Brennan
+          </a>
+        </h2>
       </nav>
     </div>
   )
