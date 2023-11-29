@@ -28,8 +28,9 @@ function Navbar() {
           by Collin Brennan
         </h1>
         <div className="flex items-center">
-          {pages.map((page) => (
+          {pages.map((page, index) => (
             <a
+              key={index}
               className={
                 'p-4 cursor-pointer' +
                 (currentPath === page.path ? ' backdrop-brightness-50' : '')
@@ -40,8 +41,9 @@ function Navbar() {
             </a>
           ))}
           <div className="ml-2 px-2 border-l border-neutral-300 text-neutral-300">
-            {links.map((link) => (
+            {links.map((link, index) => (
               <a
+                key={index}
                 href={link.url}
                 target="_blank"
                 className={
