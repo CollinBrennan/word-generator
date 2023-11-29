@@ -1,46 +1,59 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const links = [
+const pages = [
   { name: 'Generator', path: '/' },
   { name: 'Docs', path: '/docs' },
 ]
+
+const links = [{ name: 'Github', url: 'https://github.com/CollinBrennan' }]
 
 function Navbar() {
   const [currentPath, setCurrentPath] = useState('/')
   const navigate = useNavigate()
 
+  useEffect(() => {
+    navigate(currentPath)
+  }, [currentPath])
+
   function handleNavigate(path: string) {
     setCurrentPath(path)
-    navigate(path)
   }
 
   return (
-    <div className="bg-neutral-700 text-background p-2">
-      <nav className="flex justify-between items-center">
-        <div className="flex">
-          {links.map((link) => (
+    <div className="bg-neutral-700 text-background">
+      <nav className="flex justify-between items-center px-4">
+        <h1 className="text-neutral-300">
+          <span className="text-3xl font-bold text-background pr-2">wrdz</span>{' '}
+          by Collin Brennan
+        </h1>
+        <div className="flex items-center">
+          {pages.map((page) => (
             <a
               className={
-                'px-4 py-2 rounded cursor-pointer' +
-                (currentPath === link.path ? ' backdrop-brightness-50' : '')
+                'p-4 cursor-pointer' +
+                (currentPath === page.path ? ' backdrop-brightness-50' : '')
               }
-              onClick={() => handleNavigate(link.path)}
+              onClick={() => handleNavigate(page.path)}
             >
-              {link.name}
+              {page.name}
             </a>
           ))}
+          <div className="ml-2 px-2 border-l border-neutral-300 text-neutral-300">
+            {links.map((link) => (
+              <a
+                href={link.url}
+                target="_blank"
+                className={
+                  'p-4 last:pr-0 cursor-pointer' +
+                  (currentPath === link.url ? ' backdrop-brightness-50' : '')
+                }
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
         </div>
-        <h2 className="text-sm text-neutral-400 px-2">
-          made by{' '}
-          <a
-            className="text-background"
-            href="https://github.com/CollinBrennan"
-            target="_blank"
-          >
-            Collin&nbsp;Brennan
-          </a>
-        </h2>
       </nav>
     </div>
   )
