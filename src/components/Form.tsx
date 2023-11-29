@@ -32,7 +32,11 @@ const defaultFormValues: Inputs = {
   syllablesMax: 3,
 }
 
-function Form({ setFormData }: any) {
+type FormProps = {
+  onSubmit: SubmitHandler<Inputs>
+}
+
+function Form({ onSubmit }: FormProps) {
   const form = useForm<Inputs>({
     defaultValues: defaultFormValues,
   })
@@ -43,8 +47,6 @@ function Form({ setFormData }: any) {
     name: 'characterGroups',
     control,
   })
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => setFormData(data)
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
@@ -139,7 +141,7 @@ function Form({ setFormData }: any) {
         <label>Exceptions</label>
         <input
           type="text"
-          placeholder="(C)V(N)"
+          placeholder="VV"
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
           {...register('exceptions')}
         />

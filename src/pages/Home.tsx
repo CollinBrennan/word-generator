@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import Form, { Inputs } from '../components/Form'
+import Form from '../components/Form'
 import { generateWordList } from '../generate'
 import IPAChart from '../components/IPAChart'
 import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
 function Home() {
   const [isChartShowing, setIsChartShowing] = useState(false)
-  const [formData, setFormData] = useState<Inputs>()
-  const wordList = formData ? generateWordList(formData) : null
+  const [wordList, setWordList] = useState<string[]>([])
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -35,11 +34,10 @@ function Home() {
           </>
         )}
       </div>
-
       <div className="flex flex-col bg-background flex-grow">
         <div className="bg-neutral-100 p-4">Configuration</div>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
-          <Form setFormData={setFormData} />
+          <Form onSubmit={(data) => setWordList(generateWordList(data))} />
         </div>
       </div>
 
