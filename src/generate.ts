@@ -3,6 +3,7 @@ import { Inputs } from './components/Form'
 type ParsedFormData = {
   charGroups: Record<string, string[]>
   pattern: string
+  exceptions: string[]
   numWords: number
   syllablesMin: number
   syllablesMax: number
@@ -16,7 +17,9 @@ export function generateWordList(formData: Inputs): string[] {
     wordList.push(generateWord(data))
   }
 
-  return wordList
+  return wordList.filter(
+    (word) => !stringIncludesSubstring(word, data.exceptions)
+  )
 }
 
 function generateWord(data: ParsedFormData): string {
@@ -42,31 +45,55 @@ function generateWord(data: ParsedFormData): string {
 
   // Convert pattern to characters
   for (let char of parsedPattern) {
-    if (charGroups[char]) {
-      word += randString(charGroups[char])
-    } else {
-      word += char
-    }
+    if (charGroups[char]) word += randString(charGroups[char])
+    else word += char
   }
 
   return word
 }
 
 function parseFormData(formData: Inputs): ParsedFormData {
+  const { numWords, syllablesMin, syllablesMax } = formData
   const charGroups: Record<string, string[]> = {}
+  const rawExceptions = formData.exceptions.split(/\s/)
+  const parsedExceptions: string[] = []
+
+  // Parse character groups
   for (let charGroup of formData.characterGroups) {
     charGroups[charGroup.label] = charGroup.characters.split(/\s/)
   }
 
-  const { numWords, syllablesMin, syllablesMax } = formData
+  // Parse exceptions
+  for (let rawException of rawExceptions) {
+    let exceptionChars: string[][] = []
+    for (let char of rawException) {
+      if (charGroups[char]) exceptionChars.push(charGroups[char])
+      else exceptionChars.push([char])
+    }
+    parsedExceptions.push(...allPossibleStringCombos(exceptionChars))
+  }
 
   return {
     charGroups,
     pattern: formData.pattern,
+    exceptions: parsedExceptions,
     numWords,
     syllablesMin,
     syllablesMax,
   }
+}
+
+function allPossibleStringCombos(stringsArray: string[][]): string[] {
+  return stringsArray.reduce((combos, strings) =>
+    combos.flatMap((combo) => strings.map((string) => combo + string))
+  )
+}
+
+function stringIncludesSubstring(
+  string: string,
+  substrings: string[]
+): boolean {
+  return substrings.some((substring: string) => string.includes(substring))
 }
 
 function randBool() {

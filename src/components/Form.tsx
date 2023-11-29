@@ -4,6 +4,7 @@ import InputCharacterGroup from './InputCharacterGroup'
 export type Inputs = {
   characterGroups: { label: string; characters: string }[]
   pattern: string
+  exceptions: string
   numWords: number
   syllablesMin: number
   syllablesMax: number
@@ -12,6 +13,7 @@ export type Inputs = {
 const clearedFormValues: Inputs = {
   characterGroups: [{ label: 'A', characters: '' }],
   pattern: '',
+  exceptions: '',
   numWords: 50,
   syllablesMin: 1,
   syllablesMax: 3,
@@ -24,6 +26,7 @@ const defaultFormValues: Inputs = {
     { label: 'N', characters: 'm n' },
   ],
   pattern: '(C)V(N)',
+  exceptions: 'VV',
   numWords: 50,
   syllablesMin: 1,
   syllablesMax: 3,
@@ -34,8 +37,7 @@ function Form({ setFormData }: any) {
     defaultValues: defaultFormValues,
   })
 
-  const { register, control, handleSubmit, formState, reset } = form
-  const { errors } = formState
+  const { register, control, handleSubmit, reset } = form
 
   const { fields, append, remove } = useFieldArray({
     name: 'characterGroups',
@@ -130,6 +132,16 @@ function Form({ setFormData }: any) {
           placeholder="(C)V(N)"
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
           {...register('pattern')}
+        />
+      </div>
+
+      <div className="flex flex-col gap-2 pb-8">
+        <label>Exceptions</label>
+        <input
+          type="text"
+          placeholder="(C)V(N)"
+          className="border border-neutral-300 p-2 flex-grow shadow-sm"
+          {...register('exceptions')}
         />
       </div>
     </form>
