@@ -11,12 +11,13 @@ type IPAMenuProps = {
 function IPAMenu({ form, focusedField }: IPAMenuProps) {
   const [isMenuShowing, setIsMenuShowing] = useState(false)
 
-  const { setValue, getValues, setFocus } = form
+  const { setValue, getValues, setFocus, clearErrors } = form
 
   function handleClick(symbol: string) {
     if (focusedField) {
       setValue(focusedField, getValues(focusedField) + symbol)
       setFocus(focusedField)
+      clearErrors(focusedField)
     }
   }
 

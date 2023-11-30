@@ -6,7 +6,8 @@ type InputRewriteGroupProps = {
   replacementsRegister: UseFormRegisterReturn<`rewrites.${number}.replacements`>
   remove: UseFieldArrayRemove
   showRemoveButton: boolean
-  handleClick: () => void
+  handleSequenceClick: () => void
+  handleReplacementsClick: () => void
 }
 
 function InputCharGroup({
@@ -14,22 +15,23 @@ function InputCharGroup({
   replacementsRegister,
   remove,
   showRemoveButton,
-  handleClick,
+  handleSequenceClick,
+  handleReplacementsClick,
 }: InputRewriteGroupProps) {
   return (
     <div className="flex flex-row items-center gap-2">
       <div className="flex gap-2 flex-grow">
         <input
-          onClick={handleClick}
+          onClick={handleSequenceClick}
           type="text shadow"
-          placeholder="a e i o u ..."
+          placeholder="m"
           className="w-1/4 border border-neutral-300 p-2 flex-grow shadow-sm"
           {...sequenceRegister}
         />
         <input
-          onClick={handleClick}
+          onClick={handleReplacementsClick}
           type="text shadow"
-          placeholder="a e i o u ..."
+          placeholder="m n..."
           className="w-3/4 border border-neutral-300 p-2 flex-grow shadow-sm"
           {...replacementsRegister}
         />

@@ -21,6 +21,8 @@ export type FocusedField =
   | 'pattern'
   | 'exceptions'
   | `charGroups.${number}.characters`
+  | `rewrites.${number}.sequence`
+  | `rewrites.${number}.replacements`
 
 type FormProps = {
   onSubmit: SubmitHandler<Inputs>
@@ -85,7 +87,7 @@ function Form({ onSubmit }: FormProps) {
             .string()
             .trim()
             .label('Replacement sequence')
-            .required('Replacement sequence cannot be empty'),
+            .required('Replacement sequences cannot be empty'),
         })
       )
       .required(),
@@ -255,8 +257,11 @@ function Form({ onSubmit }: FormProps) {
               {rewriteFields.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
                   <InputRewriteGroup
-                    handleClick={() =>
-                      setFocusedField(`charGroups.${index}.characters`)
+                    handleSequenceClick={() =>
+                      setFocusedField(`rewrites.${index}.sequence`)
+                    }
+                    handleReplacementsClick={() =>
+                      setFocusedField(`rewrites.${index}.replacements`)
                     }
                     sequenceRegister={register(`rewrites.${index}.sequence`)}
                     replacementsRegister={register(
