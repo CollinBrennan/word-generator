@@ -39,24 +39,46 @@ const defaultFormValues: Inputs = {
 }
 
 function Form({ onSubmit }: FormProps) {
-  const schema = yup.object().shape({
+  const schema = yup.object({
     charGroups: yup
       .array()
       .of(
         yup.object().shape({
           label: yup.string().trim().required(),
-          characters: yup.string().trim().required(),
+          characters: yup
+            .string()
+            .trim()
+            .label('Character group')
+            .required('Character group cannot be empty'),
         })
       )
       .required(),
-    pattern: yup.string().trim().required(),
+    pattern: yup
+      .string()
+      .trim()
+      .label('Pattern')
+      .required('Pattern cannot be empty'),
     exceptions: yup.string().trim().ensure(),
-    numWords: yup.number().integer().min(1).required(),
-    syllablesMin: yup.number().integer().min(1).required(),
+    numWords: yup
+      .number()
+      .typeError('Not a valid number')
+      .integer('Number of words must be a whole number')
+      .min(1)
+      .label('Number of words')
+      .required(),
+    syllablesMin: yup
+      .number()
+      .typeError('Not a valid number')
+      .integer('Number of words must be a whole number')
+      .min(1)
+      .label('Min syllables')
+      .required(),
     syllablesMax: yup
       .number()
-      .integer()
+      .typeError('Not a valid number')
+      .integer('Number of words must be a whole number')
       .min(yup.ref('syllablesMin'))
+      .label('Max syllables')
       .required(),
   })
 
@@ -65,7 +87,8 @@ function Form({ onSubmit }: FormProps) {
     resolver: yupResolver(schema),
   })
 
-  const { register, control, handleSubmit, reset } = form
+  const { register, control, handleSubmit, reset, formState } = form
+  const { errors } = formState
 
   const { fields, append, remove } = useFieldArray({
     name: 'charGroups',
@@ -106,7 +129,6 @@ function Form({ onSubmit }: FormProps) {
             {...register('numWords', { valueAsNumber: true })}
           />
         </div>
-
         <div className="flex flex-col gap-2">
           <label>Min Syllables</label>
           <input
@@ -116,7 +138,6 @@ function Form({ onSubmit }: FormProps) {
             {...register('syllablesMin', { valueAsNumber: true })}
           />
         </div>
-
         <div className="flex flex-col gap-2">
           <label>Max Syllables</label>
           <input
@@ -126,18 +147,25 @@ function Form({ onSubmit }: FormProps) {
             {...register('syllablesMax', { valueAsNumber: true })}
           />
         </div>
+        <p className="text-sm text-red-500">{errors.numWords?.message}</p>
+        <p className="text-sm text-red-500">{errors.syllablesMin?.message}</p>
+        <p className="text-sm text-red-500">{errors.syllablesMax?.message}</p>
       </div>
 
       <div className="flex flex-col gap-2 pb-4">
         <label>Characters</label>
         {fields.map((field, index) => (
-          <div key={field.id}>
+          <div className="flex flex-col gap-2" key={field.id}>
             <InputCharGroup
               labelRegister={register(`charGroups.${index}.label`)}
               charactersRegister={register(`charGroups.${index}.characters`)}
               remove={() => remove(index)}
               showRemoveButton={fields.length > 1}
             />
+            <p className="text-sm text-red-500">
+              {errors.charGroups &&
+                errors.charGroups[index]?.characters?.message}
+            </p>
           </div>
         ))}
         <button
@@ -157,6 +185,7 @@ function Form({ onSubmit }: FormProps) {
           className="border border-neutral-300 p-2 flex-grow shadow-sm"
           {...register('pattern')}
         />
+        <p className="text-sm text-red-500">{errors.pattern?.message}</p>
       </div>
 
       <div className="flex flex-col gap-2 pb-8">
