@@ -79,16 +79,16 @@ function Form({ onSubmit }: FormProps) {
     syllablesMin: yup
       .number()
       .typeError('Not a valid number')
-      .integer('Number of words must be a whole number')
+      .integer('Min must be a whole number')
       .min(1)
-      .label('Min syllables')
+      .label('Min')
       .required(),
     syllablesMax: yup
       .number()
       .typeError('Not a valid number')
-      .integer('Number of words must be a whole number')
-      .min(yup.ref('syllablesMin'))
-      .label('Max syllables')
+      .integer('Max must be a whole number')
+      .min(yup.ref('syllablesMin'), 'Max must be greater than or equal to min')
+      .label('Max')
       .required(),
   })
 
