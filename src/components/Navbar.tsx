@@ -24,7 +24,7 @@ function Navbar() {
     <div className="bg-neutral-700 text-background">
       <nav className="flex justify-between items-center px-4">
         <h1 className="text-neutral-300">
-          <span className="text-3xl font-bold text-background pr-2">wrdz</span>{' '}
+          <span className="text-2xl font-bold text-background pr-2">wrdz</span>{' '}
           by Collin Brennan
         </h1>
         <div className="flex items-center">

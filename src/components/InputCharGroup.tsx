@@ -2,19 +2,19 @@ import { UseFieldArrayRemove, UseFormRegisterReturn } from 'react-hook-form'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import alphabet from '../utils/alphabet'
 
-type InputCharacterGroupProps = {
-  labelRegister: UseFormRegisterReturn<`characterGroups.${number}.label`>
-  charactersRegister: UseFormRegisterReturn<`characterGroups.${number}.characters`>
+type InputCharGroupProps = {
+  labelRegister: UseFormRegisterReturn<`charGroups.${number}.label`>
+  charactersRegister: UseFormRegisterReturn<`charGroups.${number}.characters`>
   remove: UseFieldArrayRemove
   showRemoveButton: boolean
 }
 
-function InputCharacterGroup({
+function InputCharGroup({
   labelRegister,
   charactersRegister,
   remove,
   showRemoveButton,
-}: InputCharacterGroupProps) {
+}: InputCharGroupProps) {
   return (
     <div className="flex flex-row items-center gap-2">
       <select
@@ -46,4 +46,4 @@ function InputCharacterGroup({
   )
 }
 
-export default InputCharacterGroup
+export default InputCharGroup

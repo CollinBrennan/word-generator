@@ -53,13 +53,13 @@ function generateWord(data: ParsedFormData): string {
 }
 
 function parseFormData(formData: Inputs): ParsedFormData {
-  const { numWords, syllablesMin, syllablesMax } = formData
+  const { numWords, syllablesMin, syllablesMax, exceptions, pattern } = formData
   const charGroups: Record<string, string[]> = {}
-  const rawExceptions = formData.exceptions.split(/\s/)
+  const rawExceptions = exceptions ? exceptions.split(/\s/) : []
   const parsedExceptions: string[] = []
 
   // Parse character groups
-  for (let charGroup of formData.characterGroups) {
+  for (let charGroup of formData.charGroups) {
     charGroups[charGroup.label] = charGroup.characters.split(/\s/)
   }
 
@@ -75,7 +75,7 @@ function parseFormData(formData: Inputs): ParsedFormData {
 
   return {
     charGroups,
-    pattern: formData.pattern,
+    pattern,
     exceptions: parsedExceptions,
     numWords,
     syllablesMin,
