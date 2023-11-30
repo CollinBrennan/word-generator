@@ -3,6 +3,7 @@ import InputCharGroup from './InputCharGroup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import IPAMenu from './IPAMenu'
+import { useState } from 'react'
 
 export type Inputs = {
   charGroups: { label: string; characters: string }[]
@@ -12,6 +13,12 @@ export type Inputs = {
   syllablesMin: number
   syllablesMax: number
 }
+
+export type FocusedField =
+  | undefined
+  | 'pattern'
+  | 'exceptions'
+  | `charGroups.${number}.characters`
 
 type FormProps = {
   onSubmit: SubmitHandler<Inputs>
@@ -40,6 +47,8 @@ const defaultFormValues: Inputs = {
 }
 
 function Form({ onSubmit }: FormProps) {
+  const [focusedField, setFocusedField] = useState<FocusedField>(undefined)
+
   const schema = yup.object({
     charGroups: yup
       .array()
@@ -99,7 +108,7 @@ function Form({ onSubmit }: FormProps) {
 
   return (
     <div className="flex w-full">
-      <IPAMenu />
+      <IPAMenu form={form} focusedField={focusedField} />
       <div className="flex flex-col bg-background flex-grow">
         <div className="bg-neutral-100 p-4">Configuration</div>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
@@ -168,6 +177,9 @@ function Form({ onSubmit }: FormProps) {
               {fields.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
                   <InputCharGroup
+                    handleClick={() =>
+                      setFocusedField(`charGroups.${index}.characters`)
+                    }
                     labelRegister={register(`charGroups.${index}.label`)}
                     charactersRegister={register(
                       `charGroups.${index}.characters`
@@ -193,6 +205,7 @@ function Form({ onSubmit }: FormProps) {
             <div className="flex flex-col gap-2 pb-8">
               <label>Pattern</label>
               <input
+                onClick={() => setFocusedField('pattern')}
                 type="text"
                 placeholder="(C)V(N)"
                 className="border border-neutral-300 p-2 flex-grow shadow-sm"
@@ -204,6 +217,7 @@ function Form({ onSubmit }: FormProps) {
             <div className="flex flex-col gap-2 pb-8">
               <label>Exceptions</label>
               <input
+                onClick={() => setFocusedField('exceptions')}
                 type="text"
                 placeholder="VV"
                 className="border border-neutral-300 p-2 flex-grow shadow-sm"

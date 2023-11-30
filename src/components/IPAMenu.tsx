@@ -1,8 +1,25 @@
 import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
+import { UseFormReturn } from 'react-hook-form'
+import { FocusedField, Inputs } from './Form'
 
-function IPAMenu() {
+type IPAMenuProps = {
+  form: UseFormReturn<Inputs, any, undefined>
+  focusedField: FocusedField
+}
+
+function IPAMenu({ form, focusedField }: IPAMenuProps) {
   const [isMenuShowing, setIsMenuShowing] = useState(false)
+
+  const { setValue, getValues, setFocus } = form
+
+  function handleClick(symbol: string) {
+    if (focusedField) {
+      setValue(focusedField, getValues(focusedField) + symbol)
+      setFocus(focusedField)
+    }
+  }
+
   return (
     <div className="flex-col shrink-0 bg-secondary/25 hidden md:flex">
       {isMenuShowing ? (
@@ -20,7 +37,10 @@ function IPAMenu() {
                   <h1>{group.name}</h1>
                   <div className="grid grid-cols-4 gap-2">
                     {group.symbols.split(' ').map((symbol) => (
-                      <button className="p-2 shadow bg-secondary rounded">
+                      <button
+                        onClick={() => handleClick(symbol)}
+                        className="p-2 shadow bg-secondary rounded"
+                      >
                         {symbol}
                       </button>
                     ))}

@@ -7,6 +7,7 @@ type InputCharGroupProps = {
   charactersRegister: UseFormRegisterReturn<`charGroups.${number}.characters`>
   remove: UseFieldArrayRemove
   showRemoveButton: boolean
+  handleClick: () => void
 }
 
 function InputCharGroup({
@@ -14,6 +15,7 @@ function InputCharGroup({
   charactersRegister,
   remove,
   showRemoveButton,
+  handleClick,
 }: InputCharGroupProps) {
   return (
     <div className="flex flex-row items-center gap-2">
@@ -28,6 +30,7 @@ function InputCharGroup({
         ))}
       </select>
       <input
+        onClick={handleClick}
         type="text shadow"
         placeholder="a e i o u ..."
         className="border border-neutral-300 p-2 flex-grow shadow-sm"
