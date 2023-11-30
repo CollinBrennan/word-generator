@@ -24,10 +24,10 @@ function Navbar() {
     <div className="bg-neutral-700 text-background">
       <nav className="flex justify-between items-center px-4 py-2">
         <h1 className="flex items-center text-neutral-300">
-          <span className="text-2xl font-bold text-background pr-4">Wrdz</span>{' '}
+          <span className="text-2xl font-bold text-background pr-4">wrdz</span>{' '}
           by Collin Brennan
         </h1>
-        <div className="flex items-center">
+        <div className="hidden md:flex items-center">
           {pages.map((page, index) => (
             <a
               key={index}
