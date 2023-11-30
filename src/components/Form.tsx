@@ -1,8 +1,10 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
-import InputCharacterGroup from './InputCharacterGroup'
+import InputCharGroup from './InputCharGroup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 export type Inputs = {
-  characterGroups: { label: string; characters: string }[]
+  charGroups: { label: string; characters: string }[]
   pattern: string
   exceptions: string
   numWords: number
@@ -10,8 +12,12 @@ export type Inputs = {
   syllablesMax: number
 }
 
+type FormProps = {
+  onSubmit: SubmitHandler<Inputs>
+}
+
 const clearedFormValues: Inputs = {
-  characterGroups: [{ label: 'A', characters: '' }],
+  charGroups: [{ label: 'A', characters: '' }],
   pattern: '',
   exceptions: '',
   numWords: 50,
@@ -20,7 +26,7 @@ const clearedFormValues: Inputs = {
 }
 
 const defaultFormValues: Inputs = {
-  characterGroups: [
+  charGroups: [
     { label: 'C', characters: 'p t k m n s w l j' },
     { label: 'V', characters: 'a e i o u' },
     { label: 'N', characters: 'm n' },
@@ -32,19 +38,37 @@ const defaultFormValues: Inputs = {
   syllablesMax: 3,
 }
 
-type FormProps = {
-  onSubmit: SubmitHandler<Inputs>
-}
-
 function Form({ onSubmit }: FormProps) {
+  const schema = yup.object().shape({
+    charGroups: yup
+      .array()
+      .of(
+        yup.object().shape({
+          label: yup.string().trim().required(),
+          characters: yup.string().trim().required(),
+        })
+      )
+      .required(),
+    pattern: yup.string().trim().required(),
+    exceptions: yup.string().trim().ensure(),
+    numWords: yup.number().integer().min(1).required(),
+    syllablesMin: yup.number().integer().min(1).required(),
+    syllablesMax: yup
+      .number()
+      .integer()
+      .min(yup.ref('syllablesMin'))
+      .required(),
+  })
+
   const form = useForm<Inputs>({
     defaultValues: defaultFormValues,
+    resolver: yupResolver(schema),
   })
 
   const { register, control, handleSubmit, reset } = form
 
   const { fields, append, remove } = useFieldArray({
-    name: 'characterGroups',
+    name: 'charGroups',
     control,
   })
 
@@ -108,11 +132,9 @@ function Form({ onSubmit }: FormProps) {
         <label>Characters</label>
         {fields.map((field, index) => (
           <div key={field.id}>
-            <InputCharacterGroup
-              labelRegister={register(`characterGroups.${index}.label`)}
-              charactersRegister={register(
-                `characterGroups.${index}.characters`
-              )}
+            <InputCharGroup
+              labelRegister={register(`charGroups.${index}.label`)}
+              charactersRegister={register(`charGroups.${index}.characters`)}
               remove={() => remove(index)}
               showRemoveButton={fields.length > 1}
             />
