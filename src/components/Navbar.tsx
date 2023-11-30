@@ -22,9 +22,9 @@ function Navbar() {
 
   return (
     <div className="bg-neutral-700 text-background">
-      <nav className="flex justify-between items-center px-4">
-        <h1 className="text-neutral-300">
-          <span className="text-2xl font-bold text-background pr-2">wrdz</span>{' '}
+      <nav className="flex justify-between items-center px-4 py-2">
+        <h1 className="flex items-center text-neutral-300">
+          <span className="text-2xl font-bold text-background pr-4">Wrdz</span>{' '}
           by Collin Brennan
         </h1>
         <div className="flex items-center">
@@ -32,8 +32,10 @@ function Navbar() {
             <a
               key={index}
               className={
-                'p-4 cursor-pointer' +
-                (currentPath === page.path ? ' backdrop-brightness-50' : '')
+                'px-4 py-2 rounded' +
+                (currentPath === page.path
+                  ? ' backdrop-brightness-50'
+                  : ' cursor-pointer')
               }
               onClick={() => handleNavigate(page.path)}
             >
@@ -47,7 +49,7 @@ function Navbar() {
                 href={link.url}
                 target="_blank"
                 className={
-                  'p-4 last:pr-0 cursor-pointer' +
+                  'px-4 py-2 last:pr-0 cursor-pointer' +
                   (currentPath === link.url ? ' backdrop-brightness-50' : '')
                 }
               >
