@@ -19,7 +19,7 @@ function InputCharGroup({
   handleClick,
 }: InputCharGroupProps) {
   return (
-    <div className="flex flex-row items-center gap-2">
+    <div className="flex items-center gap-2">
       <select
         className="border border-neutral-300 p-2 shadow-sm"
         {...labelRegister}
@@ -34,7 +34,7 @@ function InputCharGroup({
         onClick={handleClick}
         type="text shadow"
         placeholder="a e i o u ..."
-        className="border border-neutral-300 p-2 flex-grow shadow-sm"
+        className="border border-neutral-300 w-0 flex-grow p-2 shadow-sm"
         {...charactersRegister}
       />
       {showRemoveButton && (
