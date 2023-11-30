@@ -268,7 +268,6 @@ function Form({ onSubmit }: FormProps) {
                       `rewrites.${index}.replacements`
                     )}
                     remove={() => rewriteRemove(index)}
-                    showRemoveButton={charGroupFields.length > 1}
                   />
                   {errors.rewrites &&
                     errors?.rewrites[index]?.sequence?.message && (

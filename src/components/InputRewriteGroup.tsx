@@ -5,7 +5,6 @@ type InputRewriteGroupProps = {
   sequenceRegister: UseFormRegisterReturn<`rewrites.${number}.sequence`>
   replacementsRegister: UseFormRegisterReturn<`rewrites.${number}.replacements`>
   remove: UseFieldArrayRemove
-  showRemoveButton: boolean
   handleSequenceClick: () => void
   handleReplacementsClick: () => void
 }
@@ -14,7 +13,6 @@ function InputCharGroup({
   sequenceRegister,
   replacementsRegister,
   remove,
-  showRemoveButton,
   handleSequenceClick,
   handleReplacementsClick,
 }: InputRewriteGroupProps) {
@@ -36,16 +34,13 @@ function InputCharGroup({
           {...replacementsRegister}
         />
       </div>
-
-      {showRemoveButton && (
-        <button
-          type="button"
-          onClick={() => remove()}
-          className="p-2 bg-red-600 shadow-sm rounded"
-        >
-          <TrashIcon className="w-6 text-background" />
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={() => remove()}
+        className="p-2 bg-red-600 shadow-sm rounded"
+      >
+        <TrashIcon className="w-6 text-background" />
+      </button>
     </div>
   )
 }
