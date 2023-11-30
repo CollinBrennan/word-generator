@@ -121,7 +121,6 @@ function Form({ onSubmit }: FormProps) {
   })
 
   const { register, control, handleSubmit, reset, formState } = form
-
   const { errors } = formState
 
   const {

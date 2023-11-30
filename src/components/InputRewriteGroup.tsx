@@ -23,14 +23,14 @@ function InputCharGroup({
           onClick={handleSequenceClick}
           type="text shadow"
           placeholder="m"
-          className="w-1/4 border border-neutral-300 p-2 flex-grow shadow-sm"
+          className="w-24 border border-neutral-300 p-2 flex-grow shadow-sm"
           {...sequenceRegister}
         />
         <input
           onClick={handleReplacementsClick}
           type="text shadow"
           placeholder="m n..."
-          className="w-3/4 border border-neutral-300 p-2 flex-grow shadow-sm"
+          className="w-full border border-neutral-300 p-2 flex-grow shadow-sm"
           {...replacementsRegister}
         />
       </div>

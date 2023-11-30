@@ -3,6 +3,7 @@ import { Inputs } from './components/Form'
 type ParsedFormData = {
   charGroups: Record<string, string[]>
   pattern: string
+  rewrites: Record<string, string[]>
   exceptions: string[]
   numWords: number
   syllablesMin: number
@@ -23,7 +24,7 @@ export function generateWordList(formData: Inputs): string[] {
 }
 
 function generateWord(data: ParsedFormData): string {
-  const { charGroups, pattern, syllablesMin, syllablesMax } = data
+  const { charGroups, pattern, syllablesMin, syllablesMax, rewrites } = data
   let parsedPattern = ''
   let word = ''
 
@@ -49,12 +50,18 @@ function generateWord(data: ParsedFormData): string {
     else word += char
   }
 
+  // Replace character sequences with rewrite replacements
+  for (let sequence of Object.keys(rewrites)) {
+    word = word.replaceAll(sequence, randString(rewrites[sequence]))
+  }
+
   return word
 }
 
 function parseFormData(formData: Inputs): ParsedFormData {
   const { numWords, syllablesMin, syllablesMax, exceptions, pattern } = formData
   const charGroups: Record<string, string[]> = {}
+  const rewrites: Record<string, string[]> = {}
   const rawExceptions = exceptions ? exceptions.split(/\s/) : []
   const parsedExceptions: string[] = []
 
@@ -62,6 +69,12 @@ function parseFormData(formData: Inputs): ParsedFormData {
   for (let charGroup of formData.charGroups) {
     charGroups[charGroup.label] = charGroup.characters.split(/\s/)
   }
+
+  for (let rewrite of formData.rewrites) {
+    rewrites[rewrite.sequence] = rewrite.replacements.split(/\s/)
+  }
+
+  console.log(rewrites)
 
   // Parse exceptions
   for (let rawException of rawExceptions) {
@@ -76,6 +89,7 @@ function parseFormData(formData: Inputs): ParsedFormData {
   return {
     charGroups,
     pattern,
+    rewrites,
     exceptions: parsedExceptions,
     numWords,
     syllablesMin,
