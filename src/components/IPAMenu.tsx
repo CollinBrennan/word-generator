@@ -25,7 +25,7 @@ function IPAMenu({ form, focusedField }: IPAMenuProps) {
       {isMenuShowing ? (
         <>
           <div className="bg-secondary p-4 flex justify-between">
-            <h1>IPA Chart</h1>
+            <h1>IPA</h1>
             <button onClick={() => setIsMenuShowing(false)}>
               <XMarkIcon className="w-6" />
             </button>

@@ -1,6 +1,5 @@
 import { UseFieldArrayRemove, UseFormRegisterReturn } from 'react-hook-form'
 import { TrashIcon } from '@heroicons/react/24/outline'
-import alphabet from '../utils/alphabet'
 
 type InputCharGroupProps = {
   labelRegister: UseFormRegisterReturn<`charGroups.${number}.label`>
@@ -9,6 +8,8 @@ type InputCharGroupProps = {
   showRemoveButton: boolean
   handleClick: () => void
 }
+
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 function InputCharGroup({
   labelRegister,
@@ -23,7 +24,7 @@ function InputCharGroup({
         className="border border-neutral-300 p-2 shadow-sm"
         {...labelRegister}
       >
-        {alphabet.map((letter) => (
+        {alphabet.split('').map((letter) => (
           <option key={letter} value={letter}>
             {letter}
           </option>
