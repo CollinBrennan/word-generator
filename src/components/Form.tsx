@@ -4,10 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import IPAMenu from './IPAMenu'
 import { useState } from 'react'
+import InputRewriteGroup from './InputRewriteGroup'
 
 export type Inputs = {
   charGroups: { label: string; characters: string }[]
   pattern: string
+  rewrites: { sequence: string; replacements: string }[]
   exceptions: string
   numWords: number
   syllablesMin: number
@@ -27,6 +29,7 @@ type FormProps = {
 const clearedFormValues: Inputs = {
   charGroups: [{ label: 'A', characters: '' }],
   pattern: '',
+  rewrites: [{ sequence: '', replacements: '' }],
   exceptions: '',
   numWords: 50,
   syllablesMin: 1,
@@ -40,6 +43,7 @@ const defaultFormValues: Inputs = {
     { label: 'N', characters: 'm n' },
   ],
   pattern: '(C)V(N)',
+  rewrites: [{ sequence: 'si', replacements: 'shi' }],
   exceptions: 'VV',
   numWords: 50,
   syllablesMin: 1,
@@ -68,6 +72,23 @@ function Form({ onSubmit }: FormProps) {
       .trim()
       .label('Pattern')
       .required('Pattern cannot be empty'),
+    rewrites: yup
+      .array()
+      .of(
+        yup.object().shape({
+          sequence: yup
+            .string()
+            .trim()
+            .label('Sequence cannot be empty')
+            .required('Sequence cannot be empty'),
+          replacements: yup
+            .string()
+            .trim()
+            .label('Replacement sequence')
+            .required('Replacement sequence cannot be empty'),
+        })
+      )
+      .required(),
     exceptions: yup.string().trim().ensure(),
     numWords: yup
       .number()
@@ -101,8 +122,21 @@ function Form({ onSubmit }: FormProps) {
 
   const { errors } = formState
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: charGroupFields,
+    append: charGroupAppend,
+    remove: charGroupRemove,
+  } = useFieldArray({
     name: 'charGroups',
+    control,
+  })
+
+  const {
+    fields: rewriteFields,
+    append: rewriteAppend,
+    remove: rewriteRemove,
+  } = useFieldArray({
+    name: 'rewrites',
     control,
   })
 
@@ -174,7 +208,7 @@ function Form({ onSubmit }: FormProps) {
 
             <div className="flex flex-col gap-2 pb-4">
               <label>Characters</label>
-              {fields.map((field, index) => (
+              {charGroupFields.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
                   <InputCharGroup
                     handleClick={() =>
@@ -184,21 +218,23 @@ function Form({ onSubmit }: FormProps) {
                     charactersRegister={register(
                       `charGroups.${index}.characters`
                     )}
-                    remove={() => remove(index)}
-                    showRemoveButton={fields.length > 1}
+                    remove={() => charGroupRemove(index)}
+                    showRemoveButton={charGroupFields.length > 1}
                   />
-                  <p className="text-sm text-red-500">
-                    {errors.charGroups &&
-                      errors.charGroups[index]?.characters?.message}
-                  </p>
+                  {errors.charGroups &&
+                    errors?.charGroups[index]?.characters?.message && (
+                      <p className="text-sm text-red-500">
+                        {errors.charGroups[index]?.characters?.message}
+                      </p>
+                    )}
                 </div>
               ))}
               <button
                 type="button"
                 className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
-                onClick={() => append({ label: 'A', characters: '' })}
+                onClick={() => charGroupAppend({ label: 'A', characters: '' })}
               >
-                Add Character Group
+                Add character group
               </button>
             </div>
 
@@ -212,6 +248,46 @@ function Form({ onSubmit }: FormProps) {
                 {...register('pattern')}
               />
               <p className="text-sm text-red-500">{errors.pattern?.message}</p>
+            </div>
+
+            <div className="flex flex-col gap-2 pb-8">
+              <label>Rewrites</label>
+              {rewriteFields.map((field, index) => (
+                <div className="flex flex-col gap-2" key={field.id}>
+                  <InputRewriteGroup
+                    handleClick={() =>
+                      setFocusedField(`charGroups.${index}.characters`)
+                    }
+                    sequenceRegister={register(`rewrites.${index}.sequence`)}
+                    replacementsRegister={register(
+                      `rewrites.${index}.replacements`
+                    )}
+                    remove={() => rewriteRemove(index)}
+                    showRemoveButton={charGroupFields.length > 1}
+                  />
+                  {errors.rewrites &&
+                    errors?.rewrites[index]?.sequence?.message && (
+                      <p className="text-sm text-red-500">
+                        {errors.rewrites[index]?.sequence?.message}
+                      </p>
+                    )}
+                  {errors.rewrites &&
+                    errors?.rewrites[index]?.replacements?.message && (
+                      <p className="text-sm text-red-500">
+                        {errors.rewrites[index]?.replacements?.message}
+                      </p>
+                    )}
+                </div>
+              ))}
+              <button
+                type="button"
+                className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
+                onClick={() =>
+                  rewriteAppend({ sequence: '', replacements: '' })
+                }
+              >
+                Add sequence to rewrite
+              </button>
             </div>
 
             <div className="flex flex-col gap-2 pb-8">
