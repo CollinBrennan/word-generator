@@ -4,6 +4,7 @@ export default {
   theme: {
     fontFamily: {
       sans: ['Poppins', 'sans-serif'],
+      noto: ['Noto Sans', 'sans-serif'],
     },
     extend: {
       colors: {

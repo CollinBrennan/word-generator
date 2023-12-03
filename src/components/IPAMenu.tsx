@@ -40,7 +40,7 @@ function IPAMenu({ form, focusedField }: IPAMenuProps) {
                     {group.symbols.split(' ').map((symbol) => (
                       <button
                         onClick={() => handleClick(symbol)}
-                        className="p-2 shadow bg-secondary rounded"
+                        className="p-2 shadow bg-secondary rounded font-noto"
                       >
                         {symbol}
                       </button>

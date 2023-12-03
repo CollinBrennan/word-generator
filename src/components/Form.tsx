@@ -176,7 +176,7 @@ function Form({ onSubmit }: FormProps) {
                 <input
                   type="number"
                   placeholder="50"
-                  className="border border-neutral-300 p-2 shadow-sm"
+                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('numWords', { valueAsNumber: true })}
                 />
               </div>
@@ -185,7 +185,7 @@ function Form({ onSubmit }: FormProps) {
                 <input
                   type="number"
                   placeholder="1"
-                  className="border border-neutral-300 p-2 shadow-sm"
+                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('syllablesMin', { valueAsNumber: true })}
                 />
               </div>
@@ -194,7 +194,7 @@ function Form({ onSubmit }: FormProps) {
                 <input
                   type="number"
                   placeholder="3"
-                  className="border border-neutral-300 p-2 shadow-sm"
+                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('syllablesMax', { valueAsNumber: true })}
                 />
               </div>
@@ -245,7 +245,7 @@ function Form({ onSubmit }: FormProps) {
                 onClick={() => setFocusedField('pattern')}
                 type="text"
                 placeholder="(C)V(N)"
-                className="border border-neutral-300 p-2 flex-grow shadow-sm"
+                className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
                 {...register('pattern')}
               />
               <p className="text-sm text-red-500">{errors.pattern?.message}</p>
@@ -299,7 +299,7 @@ function Form({ onSubmit }: FormProps) {
                 onClick={() => setFocusedField('exceptions')}
                 type="text"
                 placeholder="VV"
-                className="border border-neutral-300 p-2 flex-grow shadow-sm"
+                className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
                 {...register('exceptions')}
               />
             </div>
