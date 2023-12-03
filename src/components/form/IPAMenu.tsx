@@ -2,6 +2,7 @@ import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { FocusedField, Inputs } from '../Form'
+import Button from '../Button'
 
 const symbolGroups = [
   {
@@ -57,12 +58,12 @@ function IPAMenu({ form, focusedField }: IPAMenuProps) {
                   <h1>{group.name}</h1>
                   <div className="grid grid-cols-4 gap-2">
                     {group.symbols.split(' ').map((symbol) => (
-                      <button
+                      <Button
+                        purpose="secondary"
+                        styles="font-noto"
                         onClick={() => handleClick(symbol)}
-                        className="p-2 shadow bg-secondary rounded font-noto"
-                      >
-                        {symbol}
-                      </button>
+                        children={symbol}
+                      />
                     ))}
                   </div>
                 </div>
