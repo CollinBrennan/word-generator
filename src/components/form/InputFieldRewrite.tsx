@@ -1,7 +1,8 @@
 import { UseFieldArrayRemove, UseFormRegisterReturn } from 'react-hook-form'
 import { TrashIcon } from '@heroicons/react/24/outline'
+import Button from '../Button'
 
-type InputRewriteGroupProps = {
+type InputFieldRewriteProps = {
   sequenceRegister: UseFormRegisterReturn<`rewrites.${number}.sequence`>
   replacementsRegister: UseFormRegisterReturn<`rewrites.${number}.replacements`>
   remove: UseFieldArrayRemove
@@ -9,13 +10,13 @@ type InputRewriteGroupProps = {
   handleReplacementsClick: () => void
 }
 
-function InputCharGroup({
+export default function InputFieldRewrite({
   sequenceRegister,
   replacementsRegister,
   remove,
   handleSequenceClick,
   handleReplacementsClick,
-}: InputRewriteGroupProps) {
+}: InputFieldRewriteProps) {
   return (
     <div className="flex flex-row items-center gap-2">
       <div className="flex gap-2 flex-grow  font-noto">
@@ -34,15 +35,11 @@ function InputCharGroup({
           {...replacementsRegister}
         />
       </div>
-      <button
-        type="button"
-        onClick={() => remove()}
-        className="p-2 bg-red-600 shadow-sm rounded"
-      >
-        <TrashIcon className="w-6 text-background" />
-      </button>
+      <Button
+        purpose="danger"
+        onClick={remove}
+        children={<TrashIcon className="h-6" />}
+      />
     </div>
   )
 }
-
-export default InputCharGroup

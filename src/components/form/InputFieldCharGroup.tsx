@@ -1,7 +1,10 @@
 import { UseFieldArrayRemove, UseFormRegisterReturn } from 'react-hook-form'
 import { TrashIcon } from '@heroicons/react/24/outline'
+import Button from '../Button'
 
-type InputCharGroupProps = {
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+type InputFieldCharGroupProps = {
   labelRegister: UseFormRegisterReturn<`charGroups.${number}.label`>
   charactersRegister: UseFormRegisterReturn<`charGroups.${number}.characters`>
   remove: UseFieldArrayRemove
@@ -9,15 +12,13 @@ type InputCharGroupProps = {
   handleClick: () => void
 }
 
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-function InputCharGroup({
+export default function InputFieldCharGroup({
   labelRegister,
   charactersRegister,
   remove,
   showRemoveButton,
   handleClick,
-}: InputCharGroupProps) {
+}: InputFieldCharGroupProps) {
   return (
     <div className="flex items-center gap-2 font-noto">
       <select
@@ -38,16 +39,12 @@ function InputCharGroup({
         {...charactersRegister}
       />
       {showRemoveButton && (
-        <button
-          type="button"
-          onClick={() => remove()}
-          className="p-2 bg-red-600 shadow-sm rounded"
-        >
-          <TrashIcon className="w-6 text-background" />
-        </button>
+        <Button
+          purpose="danger"
+          onClick={remove}
+          children={<TrashIcon className="h-6" />}
+        />
       )}
     </div>
   )
 }
-
-export default InputCharGroup

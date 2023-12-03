@@ -1,10 +1,11 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
-import InputCharGroup from './InputCharGroup'
+import InputFieldCharGroup from './form/InputFieldCharGroup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import IPAMenu from './IPAMenu'
+import IPAMenu from './form/IPAMenu'
 import { useState } from 'react'
-import InputRewriteGroup from './InputRewriteGroup'
+import InputFieldRewrite from './form/InputFieldRewrite'
+import Button from './Button'
 
 export type Inputs = {
   charGroups: { label: string; characters: string }[]
@@ -124,18 +125,18 @@ function Form({ onSubmit }: FormProps) {
   const { errors } = formState
 
   const {
-    fields: charGroupFields,
-    append: charGroupAppend,
-    remove: charGroupRemove,
+    fields: fieldsCharGroup,
+    append: appendCharGroup,
+    remove: removeCharGroup,
   } = useFieldArray({
     name: 'charGroups',
     control,
   })
 
   const {
-    fields: rewriteFields,
-    append: rewriteAppend,
-    remove: rewriteRemove,
+    fields: fieldsRewrite,
+    append: appendRewrite,
+    remove: removeRewrite,
   } = useFieldArray({
     name: 'rewrites',
     control,
@@ -149,69 +150,64 @@ function Form({ onSubmit }: FormProps) {
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
           <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex pb-8 gap-2">
-              <input
-                className="bg-primary px-4 py-2 rounded cursor-pointer shadow"
-                type="submit"
-                value="Generate"
-              />
-              <button
+              <Button type="submit" purpose="primary" text="Generate" />
+              <Button
+                purpose="secondary"
+                text="Clear"
                 onClick={() => reset(clearedFormValues)}
-                type="button"
-                className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
-              >
-                Clear
-              </button>
-              <button
+              />
+              <Button
+                purpose="secondary"
+                text="Default"
                 onClick={() => reset(defaultFormValues)}
-                type="button"
-                className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
-              >
-                Default
-              </button>
+              />
             </div>
 
             <div className="grid grid-cols-3 gap-2 pb-4">
-              <div className="flex flex-col gap-2">
-                <label>Words</label>
+              <label className="flex flex-col gap-2">
+                Words
                 <input
                   type="number"
                   placeholder="50"
                   className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('numWords', { valueAsNumber: true })}
                 />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="truncate">Min Syllables</label>
+              </label>
+
+              <label className="truncate flex flex-col gap-2">
+                Min Syllables
                 <input
                   type="number"
                   placeholder="1"
                   className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('syllablesMin', { valueAsNumber: true })}
                 />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label className="truncate">Max Syllables</label>
+              </label>
+
+              <label className="truncate flex flex-col gap-2">
+                Max Syllables
                 <input
                   type="number"
                   placeholder="3"
                   className="border border-neutral-300 p-2 shadow-sm  font-noto"
                   {...register('syllablesMax', { valueAsNumber: true })}
                 />
-              </div>
-              <p className="text-sm text-red-500">{errors.numWords?.message}</p>
-              <p className="text-sm text-red-500">
+              </label>
+
+              <p className="text-sm text-danger">{errors.numWords?.message}</p>
+              <p className="text-sm text-danger">
                 {errors.syllablesMin?.message}
               </p>
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-danger">
                 {errors.syllablesMax?.message}
               </p>
             </div>
 
-            <div className="flex flex-col gap-2 pb-4">
-              <label>Characters</label>
-              {charGroupFields.map((field, index) => (
+            <label className="flex flex-col gap-2 pb-4">
+              Characters
+              {fieldsCharGroup.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
-                  <InputCharGroup
+                  <InputFieldCharGroup
                     handleClick={() =>
                       setFocusedField(`charGroups.${index}.characters`)
                     }
@@ -219,28 +215,26 @@ function Form({ onSubmit }: FormProps) {
                     charactersRegister={register(
                       `charGroups.${index}.characters`
                     )}
-                    remove={() => charGroupRemove(index)}
-                    showRemoveButton={charGroupFields.length > 1}
+                    remove={() => removeCharGroup(index)}
+                    showRemoveButton={fieldsCharGroup.length > 1}
                   />
                   {errors.charGroups &&
                     errors?.charGroups[index]?.characters?.message && (
-                      <p className="text-sm text-red-500">
+                      <p className="text-sm text-danger">
                         {errors.charGroups[index]?.characters?.message}
                       </p>
                     )}
                 </div>
               ))}
-              <button
-                type="button"
-                className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
-                onClick={() => charGroupAppend({ label: 'A', characters: '' })}
-              >
-                Add character group
-              </button>
-            </div>
+              <Button
+                purpose="secondary"
+                text="Add character group"
+                onClick={() => appendCharGroup(clearedFormValues.charGroups[0])}
+              />
+            </label>
 
-            <div className="flex flex-col gap-2 pb-8">
-              <label>Pattern</label>
+            <label className="flex flex-col gap-2 pb-8">
+              Pattern
               <input
                 onClick={() => setFocusedField('pattern')}
                 type="text"
@@ -248,14 +242,14 @@ function Form({ onSubmit }: FormProps) {
                 className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
                 {...register('pattern')}
               />
-              <p className="text-sm text-red-500">{errors.pattern?.message}</p>
-            </div>
+              <p className="text-sm text-danger">{errors.pattern?.message}</p>
+            </label>
 
-            <div className="flex flex-col gap-2 pb-8">
-              <label>Rewrites</label>
-              {rewriteFields.map((field, index) => (
+            <label className="flex flex-col gap-2 pb-8">
+              Rewrites
+              {fieldsRewrite.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
-                  <InputRewriteGroup
+                  <InputFieldRewrite
                     handleSequenceClick={() =>
                       setFocusedField(`rewrites.${index}.sequence`)
                     }
@@ -266,35 +260,31 @@ function Form({ onSubmit }: FormProps) {
                     replacementsRegister={register(
                       `rewrites.${index}.replacements`
                     )}
-                    remove={() => rewriteRemove(index)}
+                    remove={() => removeRewrite(index)}
                   />
                   {errors.rewrites &&
                     errors?.rewrites[index]?.sequence?.message && (
-                      <p className="text-sm text-red-500">
+                      <p className="text-sm text-danger">
                         {errors.rewrites[index]?.sequence?.message}
                       </p>
                     )}
                   {errors.rewrites &&
                     errors?.rewrites[index]?.replacements?.message && (
-                      <p className="text-sm text-red-500">
+                      <p className="text-sm text-danger">
                         {errors.rewrites[index]?.replacements?.message}
                       </p>
                     )}
                 </div>
               ))}
-              <button
-                type="button"
-                className="bg-secondary px-4 py-2 rounded cursor-pointer shadow"
-                onClick={() =>
-                  rewriteAppend({ sequence: '', replacements: '' })
-                }
-              >
-                Add sequence to rewrite
-              </button>
-            </div>
+              <Button
+                purpose="secondary"
+                text="Add sequence to rewrite"
+                onClick={() => appendRewrite(clearedFormValues.rewrites[0])}
+              />
+            </label>
 
-            <div className="flex flex-col gap-2 pb-8">
-              <label>Exceptions</label>
+            <label className="flex flex-col gap-2 pb-8">
+              Exceptions
               <input
                 onClick={() => setFocusedField('exceptions')}
                 type="text"
@@ -302,7 +292,7 @@ function Form({ onSubmit }: FormProps) {
                 className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
                 {...register('exceptions')}
               />
-            </div>
+            </label>
           </form>
         </div>
       </div>

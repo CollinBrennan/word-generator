@@ -1,7 +1,7 @@
 import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { FocusedField, Inputs } from './Form'
+import { FocusedField, Inputs } from '../Form'
 
 const symbolGroups = [
   {
