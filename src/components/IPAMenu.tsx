@@ -3,6 +3,25 @@ import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { FocusedField, Inputs } from './Form'
 
+const symbolGroups = [
+  {
+    name: 'Vowels',
+    symbols: 'ɨ ʉ ɯ u ɪ ʏ ʊ ø ɘ ɵ ɤ ə ɛ œ ɜ ɞ ʌ ɔ æ ɐ ɶ ä ɑ ɒ',
+  },
+  { name: 'Plosive', symbols: 'ʈ ɖ ɟ ɢ ʔ' },
+  { name: 'Nasal', symbols: 'ɱ ɳ ɲ ŋ ɴ' },
+  { name: 'Trill', symbols: 'ʙ ʀ' },
+  { name: 'Tap/Flap', symbols: 'ⱱ ɾ ɽ' },
+  { name: 'Fricative', symbols: 'ɸ β θ ð ʃ ʒ ʂ ʐ ç ʝ ɣ χ ʁ ħ ʕ ɦ' },
+  { name: 'Lateral Fricative', symbols: 'ɬ ɮ' },
+  { name: 'Approximant', symbols: 'ʋ ɹ ɻ ɰ' },
+  { name: 'Lateral Approximant', symbols: 'ɭ ʎ ʟ' },
+  { name: 'Clicks', symbols: 'ʘ ǀ ǃ ǂ ǁ' },
+  { name: 'Voiced Implosives', symbols: 'ɓ ɗ ʄ ɠ ʛ' },
+  { name: 'Affricates', symbols: 't͡s t͡ʃ t͡ɕ ʈ͡ʂ d͡z d͡ʒ d͡ʑ ɖ͡ʐ' },
+  { name: 'Other', symbols: 'ʍ w ʜ ʢ ʡ ɕ ʑ ɺ ɧ' },
+]
+
 type IPAMenuProps = {
   form: UseFormReturn<Inputs, any, undefined>
   focusedField: FocusedField
@@ -66,18 +85,3 @@ function IPAMenu({ form, focusedField }: IPAMenuProps) {
 }
 
 export default IPAMenu
-
-const symbolGroups = [
-  { name: 'Plosive', symbols: 'ʈ ɖ ɟ ɢ ʔ' },
-  { name: 'Nasal', symbols: 'ɱ ɳ ɲ ŋ ɴ' },
-  { name: 'Trill', symbols: 'ʙ ʀ' },
-  { name: 'Tap/Flap', symbols: 'ⱱ ɾ ɽ' },
-  { name: 'Fricative', symbols: 'ɸ β θ ð ʃ ʒ ʂ ʐ ç ʝ ɣ χ ʁ ħ ʕ ɦ' },
-  { name: 'Lateral Fricative', symbols: 'ɬ ɮ' },
-  { name: 'Approximant', symbols: 'ʋ ɹ ɻ ɰ' },
-  { name: 'Lateral Approximant', symbols: 'ɭ ʎ ʟ' },
-  { name: 'Clicks', symbols: 'ʘ ǀ ǃ ǂ ǁ' },
-  { name: 'Voiced Implosives', symbols: 'ɓ ɗ ʄ ɠ ʛ' },
-  { name: 'Affricates', symbols: 't͡s t͡ʃ t͡ɕ ʈ͡ʂ d͡z d͡ʒ d͡ʑ ɖ͡ʐ' },
-  { name: 'Other', symbols: 'ʍ w ʜ ʢ ʡ ɕ ʑ ɺ ɧ' },
-]
