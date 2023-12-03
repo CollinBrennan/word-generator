@@ -30,7 +30,7 @@ function Navbar() {
     <div className="bg-neutral-700 text-background">
       <nav className="relative flex justify-between items-center px-4 py-2">
         <h1 className="flex items-center text-neutral-300 gap-4">
-          <img src={logo} className="h-6" />
+          <img src={logo} className="h-6" alt="Wrdz" />
           by Collin Brennan
         </h1>
 
@@ -52,7 +52,7 @@ function Navbar() {
                   <a
                     key={index}
                     onClick={() => handleNavigate(page.path)}
-                    className="px-4 py-2"
+                    className="px-4 py-2 cursor-pointer"
                   >
                     {page.name}
                   </a>

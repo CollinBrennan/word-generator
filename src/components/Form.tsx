@@ -148,14 +148,12 @@ function Form({ onSubmit }: FormProps) {
         <div className="bg-neutral-100 p-4">Configuration</div>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
           <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex justify-end pb-8 gap-2">
-              <button
-                onClick={() => reset(defaultFormValues)}
-                type="button"
-                className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
-              >
-                Default
-              </button>
+            <div className="flex pb-8 gap-2">
+              <input
+                className="bg-primary px-4 py-2 rounded cursor-pointer shadow"
+                type="submit"
+                value="Generate"
+              />
               <button
                 onClick={() => reset(clearedFormValues)}
                 type="button"
@@ -163,11 +161,13 @@ function Form({ onSubmit }: FormProps) {
               >
                 Clear
               </button>
-              <input
-                className="bg-primary px-4 py-2 rounded cursor-pointer shadow"
-                type="submit"
-                value="Generate"
-              />
+              <button
+                onClick={() => reset(defaultFormValues)}
+                type="button"
+                className="bg-secondary  px-4 py-2 rounded cursor-pointer shadow"
+              >
+                Default
+              </button>
             </div>
 
             <div className="grid grid-cols-3 gap-2 pb-4">
