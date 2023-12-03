@@ -18,7 +18,7 @@ function InputCharGroup({
 }: InputRewriteGroupProps) {
   return (
     <div className="flex flex-row items-center gap-2">
-      <div className="flex gap-2 flex-grow">
+      <div className="flex gap-2 flex-grow  font-noto">
         <input
           onClick={handleSequenceClick}
           type="text shadow"

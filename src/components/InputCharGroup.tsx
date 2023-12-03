@@ -19,7 +19,7 @@ function InputCharGroup({
   handleClick,
 }: InputCharGroupProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 font-noto">
       <select
         className="border border-neutral-300 p-2 shadow-sm"
         {...labelRegister}
