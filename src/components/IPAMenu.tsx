@@ -6,7 +6,7 @@ import { FocusedField, Inputs } from './Form'
 const symbolGroups = [
   {
     name: 'Vowels',
-    symbols: 'ɨ ʉ ɯ u ɪ ʏ ʊ ø ɘ ɵ ɤ ə ɛ œ ɜ ɞ ʌ ɔ æ ɐ ɶ ä ɑ ɒ',
+    symbols: 'ɨ ʉ ɯ ɪ ʏ ʊ ø ɘ ɵ ɤ ɛ œ ɜ ɞ ʌ ɔ æ ɐ ɶ ɑ ɒ',
   },
   { name: 'Plosive', symbols: 'ʈ ɖ ɟ ɢ ʔ' },
   { name: 'Nasal', symbols: 'ɱ ɳ ɲ ŋ ɴ' },
