@@ -259,7 +259,7 @@ function Form({ onSubmit }: FormProps) {
                       }
                       placeholder="si"
                       register={register(`rewrites.${index}.sequence`)}
-                      styles="w-24"
+                      styles="[&&]:w-24"
                     />
                     <TextField
                       onFocus={() =>
