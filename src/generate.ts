@@ -74,8 +74,6 @@ function parseFormData(formData: Inputs): ParsedFormData {
     rewrites[rewrite.sequence] = rewrite.replacements.split(/\s/)
   }
 
-  console.log(rewrites)
-
   // Parse exceptions
   for (let rawException of rawExceptions) {
     let exceptionChars: string[][] = []
