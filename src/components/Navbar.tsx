@@ -2,6 +2,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
+import { Menu } from '@headlessui/react'
 
 const pages = [
   { name: 'Generator', path: '/' },
@@ -14,7 +15,6 @@ const links = [
 
 function Navbar() {
   const [currentPath, setCurrentPath] = useState('/')
-  const [isNavShowing, setIsNavShowing] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,86 +23,88 @@ function Navbar() {
 
   function handleNavigate(path: string) {
     setCurrentPath(path)
-    setIsNavShowing(false)
   }
 
   return (
     <div className="bg-neutral-700 text-background">
-      <nav className="relative flex justify-between items-center px-4 py-2">
+      <div className="relative flex justify-between items-center px-4 py-2">
         <h1 className="flex items-center text-neutral-300 gap-4">
           <img src={logo} className="h-6" alt="Wrdz" />
           by Collin Brennan
         </h1>
 
-        <div>
-          <div>
-            <button
-              onClick={() => setIsNavShowing((prev) => !prev)}
-              className="flex items-center md:hidden p-2"
-            >
-              {isNavShowing ? (
-                <XMarkIcon className="h-6" />
-              ) : (
-                <Bars3Icon className="h-6" />
-              )}
-            </button>
-            {isNavShowing && (
-              <div className="flex flex-col absolute right-0 bottom-0 translate-y-full m-2 bg-background text-text md:hidden rounded shadow">
-                {pages.map((page, index) => (
-                  <a
-                    key={index}
-                    onClick={() => handleNavigate(page.path)}
-                    className="px-4 py-2 cursor-pointer"
-                  >
-                    {page.name}
-                  </a>
-                ))}
-                <div className="flex flex-col border-t border-gray-300">
-                  {links.map((link, index) => (
+        <Menu as="nav" className="relative text-right md:hidden">
+          <Menu.Button className="py-2">
+            <Bars3Icon className="h-6" />
+          </Menu.Button>
+          <Menu.Items className="absolute right-0 flex flex-col shadow bg-background text-text rounded overflow-hidden divide-y divide-neutral-200">
+            <div className="flex flex-col">
+              {pages.map((page, index) => (
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      key={index}
+                      onClick={() => handleNavigate(page.path)}
+                      className={`px-4 py-2 cursor-pointer ${
+                        active && 'bg-neutral-300'
+                      }`}
+                    >
+                      {page.name}
+                    </a>
+                  )}
+                </Menu.Item>
+              ))}
+            </div>
+            <div className="flex flex-col">
+              {links.map((link, index) => (
+                <Menu.Item>
+                  {({ active }) => (
                     <a
                       key={index}
                       href={link.url}
                       target="_blank"
-                      className="px-4 py-2"
+                      className={`px-4 py-2 cursor-pointer ${
+                        active && 'bg-neutral-300'
+                      }`}
                     >
                       {link.name}
                     </a>
-                  ))}{' '}
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="hidden md:flex items-center">
-            {pages.map((page, index) => (
-              <a
-                key={index}
-                className={
-                  'px-4 py-2 rounded' +
-                  (currentPath === page.path
-                    ? ' backdrop-brightness-50'
-                    : ' cursor-pointer')
-                }
-                onClick={() => handleNavigate(page.path)}
-              >
-                {page.name}
-              </a>
-            ))}
-            <div className="ml-2 px-2 border-l border-neutral-300 text-neutral-300">
-              {links.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  className={'px-4 py-2 last:pr-0 cursor-pointer'}
-                >
-                  {link.name}
-                </a>
+                  )}
+                </Menu.Item>
               ))}
             </div>
+          </Menu.Items>
+        </Menu>
+
+        <nav className="hidden md:flex items-center">
+          {pages.map((page, index) => (
+            <a
+              key={index}
+              className={
+                'px-4 py-2 rounded' +
+                (currentPath === page.path
+                  ? ' backdrop-brightness-50'
+                  : ' cursor-pointer')
+              }
+              onClick={() => handleNavigate(page.path)}
+            >
+              {page.name}
+            </a>
+          ))}
+          <div className="ml-2 px-2 border-l border-neutral-300 text-neutral-300">
+            {links.map((link, index) => (
+              <a
+                key={index}
+                href={link.url}
+                target="_blank"
+                className={'px-4 py-2 last:pr-0 cursor-pointer'}
+              >
+                {link.name}
+              </a>
+            ))}
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     </div>
   )
 }
