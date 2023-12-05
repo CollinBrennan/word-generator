@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
-import InputFieldCharGroup from './form/InputFieldCharGroup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import IPAMenu from './form/IPAMenu'
 import { useState } from 'react'
-import InputFieldRewrite from './form/InputFieldRewrite'
 import Button from './Button'
+import TextField from './form/TextField'
+import { TrashIcon } from '@heroicons/react/24/outline'
+import Select from './form/Select'
 
 export type Inputs = {
   charGroups: { label: string; characters: string }[]
@@ -125,7 +126,7 @@ function Form({ onSubmit }: FormProps) {
   const { errors } = formState
 
   const {
-    fields: fieldsCharGroup,
+    fields: charGroupFields,
     append: appendCharGroup,
     remove: removeCharGroup,
   } = useFieldArray({
@@ -134,7 +135,7 @@ function Form({ onSubmit }: FormProps) {
   })
 
   const {
-    fields: fieldsRewrite,
+    fields: rewriteFields,
     append: appendRewrite,
     remove: removeRewrite,
   } = useFieldArray({
@@ -146,7 +147,7 @@ function Form({ onSubmit }: FormProps) {
     <div className="flex w-full">
       <IPAMenu form={form} focusedField={focusedField} />
       <div className="flex flex-col bg-background flex-grow">
-        <div className="bg-neutral-100 p-4">Configuration</div>
+        <h1 className="bg-neutral-100 p-4">Configuration</h1>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
           <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex pb-8 gap-2">
@@ -166,31 +167,28 @@ function Form({ onSubmit }: FormProps) {
             <div className="grid grid-cols-3 gap-2 pb-4">
               <label className="flex flex-col gap-2">
                 Words
-                <input
+                <TextField
                   type="number"
                   placeholder="50"
-                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
-                  {...register('numWords', { valueAsNumber: true })}
+                  register={register('numWords', { valueAsNumber: true })}
                 />
               </label>
 
               <label className="truncate flex flex-col gap-2">
                 Min Syllables
-                <input
+                <TextField
                   type="number"
                   placeholder="1"
-                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
-                  {...register('syllablesMin', { valueAsNumber: true })}
+                  register={register('syllablesMin', { valueAsNumber: true })}
                 />
               </label>
 
               <label className="truncate flex flex-col gap-2">
                 Max Syllables
-                <input
+                <TextField
                   type="number"
                   placeholder="3"
-                  className="border border-neutral-300 p-2 shadow-sm  font-noto"
-                  {...register('syllablesMax', { valueAsNumber: true })}
+                  register={register('syllablesMax', { valueAsNumber: true })}
                 />
               </label>
 
@@ -203,21 +201,28 @@ function Form({ onSubmit }: FormProps) {
               </p>
             </div>
 
-            <label className="flex flex-col gap-2 pb-4">
-              Characters
-              {fieldsCharGroup.map((field, index) => (
+            <fieldset className="flex flex-col gap-2 pb-4">
+              <legend>Characters</legend>
+              {charGroupFields.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
-                  <InputFieldCharGroup
-                    handleClick={() =>
-                      setFocusedField(`charGroups.${index}.characters`)
-                    }
-                    labelRegister={register(`charGroups.${index}.label`)}
-                    charactersRegister={register(
-                      `charGroups.${index}.characters`
+                  <div className="flex items-center gap-2">
+                    <Select register={register(`charGroups.${index}.label`)} />
+                    <TextField
+                      onFocus={() =>
+                        setFocusedField(`charGroups.${index}.characters`)
+                      }
+                      placeholder="a e i o u ..."
+                      register={register(`charGroups.${index}.characters`)}
+                    />
+                    {charGroupFields.length > 1 && (
+                      <Button
+                        purpose="danger"
+                        onClick={() => removeCharGroup(index)}
+                        children={<TrashIcon className="h-6" />}
+                      />
                     )}
-                    remove={() => removeCharGroup(index)}
-                    showRemoveButton={fieldsCharGroup.length > 1}
-                  />
+                  </div>
+
                   {errors.charGroups &&
                     errors?.charGroups[index]?.characters?.message && (
                       <p className="text-sm text-danger">
@@ -231,37 +236,45 @@ function Form({ onSubmit }: FormProps) {
                 text="Add character group"
                 onClick={() => appendCharGroup(clearedFormValues.charGroups[0])}
               />
-            </label>
+            </fieldset>
 
             <label className="flex flex-col gap-2 pb-8">
               Pattern
-              <input
-                onClick={() => setFocusedField('pattern')}
-                type="text"
+              <TextField
+                onFocus={() => setFocusedField('pattern')}
                 placeholder="(C)V(N)"
-                className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
-                {...register('pattern')}
+                register={register('pattern')}
               />
               <p className="text-sm text-danger">{errors.pattern?.message}</p>
             </label>
 
-            <label className="flex flex-col gap-2 pb-8">
-              Rewrites
-              {fieldsRewrite.map((field, index) => (
+            <fieldset className="flex flex-col gap-2 pb-8">
+              <legend>Rewrites</legend>
+              {rewriteFields.map((field, index) => (
                 <div className="flex flex-col gap-2" key={field.id}>
-                  <InputFieldRewrite
-                    handleSequenceClick={() =>
-                      setFocusedField(`rewrites.${index}.sequence`)
-                    }
-                    handleReplacementsClick={() =>
-                      setFocusedField(`rewrites.${index}.replacements`)
-                    }
-                    sequenceRegister={register(`rewrites.${index}.sequence`)}
-                    replacementsRegister={register(
-                      `rewrites.${index}.replacements`
-                    )}
-                    remove={() => removeRewrite(index)}
-                  />
+                  <div className="flex items-center gap-2">
+                    <TextField
+                      onFocus={() =>
+                        setFocusedField(`rewrites.${index}.sequence`)
+                      }
+                      placeholder="si"
+                      register={register(`rewrites.${index}.sequence`)}
+                      styles="w-24"
+                    />
+                    <TextField
+                      onFocus={() =>
+                        setFocusedField(`rewrites.${index}.replacements`)
+                      }
+                      placeholder="shi"
+                      register={register(`rewrites.${index}.replacements`)}
+                    />
+                    <Button
+                      purpose="danger"
+                      onClick={() => removeRewrite(index)}
+                      children={<TrashIcon className="h-6" />}
+                    />
+                  </div>
+
                   {errors.rewrites &&
                     errors?.rewrites[index]?.sequence?.message && (
                       <p className="text-sm text-danger">
@@ -281,16 +294,14 @@ function Form({ onSubmit }: FormProps) {
                 text="Add sequence to rewrite"
                 onClick={() => appendRewrite(clearedFormValues.rewrites[0])}
               />
-            </label>
+            </fieldset>
 
             <label className="flex flex-col gap-2 pb-8">
               Exceptions
-              <input
-                onClick={() => setFocusedField('exceptions')}
-                type="text"
+              <TextField
+                onFocus={() => setFocusedField('exceptions')}
                 placeholder="VV"
-                className="border border-neutral-300 p-2 flex-grow shadow-sm font-noto"
-                {...register('exceptions')}
+                register={register('exceptions')}
               />
             </label>
           </form>
