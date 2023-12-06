@@ -1,4 +1,4 @@
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon } from '@heroicons/react/24/outline'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
@@ -28,10 +28,7 @@ function Navbar() {
   return (
     <div className="bg-neutral-700 text-background">
       <div className="relative flex justify-between items-center px-4 py-2">
-        <h1 className="flex items-center text-neutral-300 gap-4">
-          <img src={logo} className="h-6" alt="Wrdz" />
-          by Collin Brennan
-        </h1>
+        <img src={logo} className="h-6" alt="Wrdz" />
 
         <Menu as="nav" className="relative text-right md:hidden">
           <Menu.Button className="py-2">
