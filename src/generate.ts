@@ -31,9 +31,23 @@ function generateWord(data: ParsedFormData): string {
   const numSyllables = randInt(syllablesMin, syllablesMax)
 
   // Parse pattern
-  const parensRegex = /\(([^(]*?)\)/
   for (let i = 0; i < numSyllables; i++) {
     let syllablePattern = pattern
+
+    // Parse brackets
+    const bracketsRegex = /\[([^[]*?)\]/
+    while (bracketsRegex.test(syllablePattern)) {
+      const charsInBrackets = bracketsRegex
+        .exec(syllablePattern)![1]
+        .split(/\s/)
+      syllablePattern = syllablePattern.replace(
+        bracketsRegex,
+        randString(charsInBrackets)
+      )
+    }
+
+    // Parse parentheses
+    const parensRegex = /\(([^(]*?)\)/
     while (parensRegex.test(syllablePattern)) {
       const charsInParens = parensRegex.exec(syllablePattern)![1]
       syllablePattern = syllablePattern.replace(
@@ -41,6 +55,7 @@ function generateWord(data: ParsedFormData): string {
         randBool() ? charsInParens : ''
       )
     }
+
     parsedPattern += syllablePattern
   }
 
@@ -70,6 +85,7 @@ function parseFormData(formData: Inputs): ParsedFormData {
     charGroups[charGroup.label] = charGroup.characters.split(/\s/)
   }
 
+  // Parse rewrites
   for (let rewrite of formData.rewrites) {
     rewrites[rewrite.sequence] = rewrite.replacements.split(/\s/)
   }
