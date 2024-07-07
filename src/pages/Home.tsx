@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Form from '../components/Form'
-import { generateWordList } from '../generate'
+import formDataToWords from '../generate/formDataToWords'
 import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline'
 
 function Home() {
@@ -20,7 +20,7 @@ function Home() {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="md:w-3/4">
-        <Form onSubmit={(data) => setWordList(generateWordList(data))} />
+        <Form onSubmit={(data) => setWordList(formDataToWords(data))} />
       </div>
 
       <div className="flex flex-col bg-primary/20 md:w-1/4">

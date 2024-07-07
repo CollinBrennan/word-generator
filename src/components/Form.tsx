@@ -7,16 +7,7 @@ import Button from './Button'
 import TextField from './form/TextField'
 import { TrashIcon } from '@heroicons/react/24/outline'
 import Select from './form/Select'
-
-export type Inputs = {
-  charGroups: { label: string; characters: string }[]
-  pattern: string
-  rewrites: { sequence: string; replacements: string }[]
-  exceptions: string
-  numWords: number
-  syllablesMin: number
-  syllablesMax: number
-}
+import { FormData } from '../types'
 
 export type FocusedField =
   | undefined
@@ -27,10 +18,10 @@ export type FocusedField =
   | `rewrites.${number}.replacements`
 
 type FormProps = {
-  onSubmit: SubmitHandler<Inputs>
+  onSubmit: SubmitHandler<FormData>
 }
 
-const clearedFormValues: Inputs = {
+const clearedFormValues: FormData = {
   charGroups: [{ label: 'A', characters: '' }],
   pattern: '',
   rewrites: [{ sequence: '', replacements: '' }],
@@ -40,7 +31,7 @@ const clearedFormValues: Inputs = {
   syllablesMax: 3,
 }
 
-const defaultFormValues: Inputs = {
+const defaultFormValues: FormData = {
   charGroups: [
     { label: 'C', characters: 'p t k m n s w l j' },
     { label: 'V', characters: 'a e i o u' },
@@ -117,7 +108,7 @@ function Form({ onSubmit }: FormProps) {
       .required(),
   })
 
-  const form = useForm<Inputs>({
+  const form = useForm<FormData>({
     defaultValues: defaultFormValues,
     resolver: yupResolver(schema),
   })

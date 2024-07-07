@@ -1,32 +1,25 @@
-import { Inputs } from './components/Form'
+import { FormData, GeneratorConfig } from '../types'
+import formDataToConfig from './formDataToConfig'
 
-type ParsedFormData = {
-  charGroups: Record<string, string[]>
-  weights: Record<string, number[]>
-  pattern: string
-  rewrites: Record<string, string[]>
-  exceptions: string[]
-  numWords: number
-  syllablesMin: number
-  syllablesMax: number
+export default function formDataToWords(formData: FormData): string[] {
+  const config = formDataToConfig(formData)
+  return configToWords(config)
 }
 
-export function generateWordList(formData: Inputs): string[] {
+function configToWords(config: GeneratorConfig): string[] {
   const wordList: string[] = []
-  const data = parseFormData(formData)
-
-  for (let i = 0; i < data.numWords; i++) {
-    wordList.push(generateWord(data))
+  for (let i = 0; i < config.numWords; i++) {
+    wordList.push(generateWord(config))
   }
 
   return wordList.filter(
-    (word) => !stringIncludesSubstring(word, data.exceptions)
+    (word) => !stringIncludesSubstring(word, config.exceptions)
   )
 }
 
-function generateWord(data: ParsedFormData): string {
+function generateWord(config: GeneratorConfig): string {
   const { charGroups, weights, pattern, syllablesMin, syllablesMax, rewrites } =
-    data
+    config
   let parsedPattern = ''
   let word = ''
 
@@ -74,63 +67,6 @@ function generateWord(data: ParsedFormData): string {
   }
 
   return word
-}
-
-function parseFormData(formData: Inputs): ParsedFormData {
-  const { numWords, syllablesMin, syllablesMax, exceptions, pattern } = formData
-  const charGroups: Record<string, string[]> = {}
-  const weights: Record<string, number[]> = {}
-  const rewrites: Record<string, string[]> = {}
-  const rawExceptions = exceptions ? exceptions.split(/\s+/) : []
-  const parsedExceptions: string[] = []
-
-  // Parse character groups and weights
-  for (let charGroup of formData.charGroups) {
-    const weightRegex = /(.+)\*([0-9]*[.]?[0-9]+)/
-    const charsWithWeights = charGroup.characters.split(/\s+/)
-
-    const chars: string[] = []
-    const charWeights: number[] = []
-    for (let charWithWeight of charsWithWeights) {
-      let result = weightRegex.exec(charWithWeight)
-      chars.push(result ? result![1] : charWithWeight)
-      charWeights.push(result ? parseFloat(result![2]) : 1)
-    }
-    charGroups[charGroup.label] = chars
-    weights[charGroup.label] = charWeights
-  }
-
-  // Parse rewrites
-  for (let rewrite of formData.rewrites) {
-    rewrites[rewrite.sequence] = rewrite.replacements.split(/\s+/)
-  }
-
-  // Parse exceptions
-  for (let rawException of rawExceptions) {
-    let exceptionChars: string[][] = []
-    for (let char of rawException) {
-      if (charGroups[char]) exceptionChars.push(charGroups[char])
-      else exceptionChars.push([char])
-    }
-    parsedExceptions.push(...allPossibleStringCombos(exceptionChars))
-  }
-
-  return {
-    charGroups,
-    weights,
-    pattern,
-    rewrites,
-    exceptions: parsedExceptions,
-    numWords,
-    syllablesMin,
-    syllablesMax,
-  }
-}
-
-function allPossibleStringCombos(stringsArray: string[][]): string[] {
-  return stringsArray.reduce((combos, strings) =>
-    combos.flatMap((combo) => strings.map((string) => combo + string))
-  )
 }
 
 function stringIncludesSubstring(
