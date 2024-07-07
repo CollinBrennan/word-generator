@@ -3,10 +3,10 @@ import formDataToConfig from './formDataToConfig'
 
 export default function formDataToWords(formData: FormData): string[] {
   const config = formDataToConfig(formData)
-  return configToWords(config)
+  return generateWords(config)
 }
 
-function configToWords(config: GeneratorConfig): string[] {
+function generateWords(config: GeneratorConfig): string[] {
   const wordList: string[] = []
   for (let i = 0; i < config.numWords; i++) {
     wordList.push(generateWord(config))
