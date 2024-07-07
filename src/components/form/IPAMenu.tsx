@@ -1,7 +1,8 @@
 import { ListBulletIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import { FocusedField, Inputs } from '../Form'
+import { FocusedField } from '../Form'
+import { FormData } from '../../types'
 import Button from '../Button'
 
 const symbolGroups = [
@@ -24,7 +25,7 @@ const symbolGroups = [
 ]
 
 type IPAMenuProps = {
-  form: UseFormReturn<Inputs, any, undefined>
+  form: UseFormReturn<FormData, any, undefined>
   focusedField: FocusedField
 }
 
