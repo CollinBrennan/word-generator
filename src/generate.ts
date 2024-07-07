@@ -2,6 +2,7 @@ import { Inputs } from './components/Form'
 
 type ParsedFormData = {
   charGroups: Record<string, string[]>
+  weights: Record<string, number[]>
   pattern: string
   rewrites: Record<string, string[]>
   exceptions: string[]
@@ -24,7 +25,8 @@ export function generateWordList(formData: Inputs): string[] {
 }
 
 function generateWord(data: ParsedFormData): string {
-  const { charGroups, pattern, syllablesMin, syllablesMax, rewrites } = data
+  const { charGroups, weights, pattern, syllablesMin, syllablesMax, rewrites } =
+    data
   let parsedPattern = ''
   let word = ''
 
@@ -61,7 +63,8 @@ function generateWord(data: ParsedFormData): string {
 
   // Convert pattern to characters
   for (let char of parsedPattern) {
-    if (charGroups[char]) word += randString(charGroups[char])
+    if (charGroups[char])
+      word += weightedRandString(charGroups[char], weights[char])
     else word += char
   }
 
@@ -76,18 +79,30 @@ function generateWord(data: ParsedFormData): string {
 function parseFormData(formData: Inputs): ParsedFormData {
   const { numWords, syllablesMin, syllablesMax, exceptions, pattern } = formData
   const charGroups: Record<string, string[]> = {}
+  const weights: Record<string, number[]> = {}
   const rewrites: Record<string, string[]> = {}
-  const rawExceptions = exceptions ? exceptions.split(/\s/) : []
+  const rawExceptions = exceptions ? exceptions.split(/\s+/) : []
   const parsedExceptions: string[] = []
 
-  // Parse character groups
+  // Parse character groups and weights
   for (let charGroup of formData.charGroups) {
-    charGroups[charGroup.label] = charGroup.characters.split(/\s/)
+    const weightRegex = /(.+)\*([0-9]*[.]?[0-9]+)/
+    const charsWithWeights = charGroup.characters.split(/\s+/)
+
+    const chars: string[] = []
+    const charWeights: number[] = []
+    for (let charWithWeight of charsWithWeights) {
+      let result = weightRegex.exec(charWithWeight)
+      chars.push(result ? result![1] : charWithWeight)
+      charWeights.push(result ? parseFloat(result![2]) : 1)
+    }
+    charGroups[charGroup.label] = chars
+    weights[charGroup.label] = charWeights
   }
 
   // Parse rewrites
   for (let rewrite of formData.rewrites) {
-    rewrites[rewrite.sequence] = rewrite.replacements.split(/\s/)
+    rewrites[rewrite.sequence] = rewrite.replacements.split(/\s+/)
   }
 
   // Parse exceptions
@@ -102,6 +117,7 @@ function parseFormData(formData: Inputs): ParsedFormData {
 
   return {
     charGroups,
+    weights,
     pattern,
     rewrites,
     exceptions: parsedExceptions,
@@ -136,6 +152,22 @@ function randString(array: string[]) {
   if (array.length > 0) {
     const randIndex = Math.floor(Math.random() * array.length)
     return array[randIndex]
+  }
+
+  return ''
+}
+
+function weightedRandString(array: string[], weights: number[]) {
+  if (array.length > 0) {
+    const cumulativeWeights: number[] = []
+    for (let i = 0; i < weights.length; i += 1) {
+      cumulativeWeights[i] = weights[i] + (cumulativeWeights[i - 1] || 0)
+    }
+    const random =
+      cumulativeWeights[cumulativeWeights.length - 1] * Math.random()
+    for (let i = 0; i < array.length; i += 1) {
+      if (random <= cumulativeWeights[i]) return array[i]
+    }
   }
 
   return ''
