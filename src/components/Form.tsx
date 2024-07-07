@@ -109,11 +109,11 @@ function Form({ onSubmit }: FormProps) {
   })
 
   const form = useForm<FormData>({
-    defaultValues: defaultFormValues,
+    defaultValues: getFormDataFromLocalStorage() ?? defaultFormValues,
     resolver: yupResolver(schema),
   })
 
-  const { register, control, handleSubmit, reset, formState } = form
+  const { register, control, handleSubmit, reset, formState, getValues } = form
   const { errors } = formState
 
   const {
@@ -134,24 +134,44 @@ function Form({ onSubmit }: FormProps) {
     control,
   })
 
+  function saveFormDataToLocalStorage() {
+    localStorage.setItem('formData', JSON.stringify(getValues()))
+  }
+
+  function getFormDataFromLocalStorage() {
+    const data = localStorage.getItem('formData')
+    return data ? (JSON.parse(data) as FormData) : null
+  }
+
   return (
     <div className="flex w-full">
       <IPAMenu form={form} focusedField={focusedField} />
+
       <div className="flex flex-col bg-background flex-grow">
         <h1 className="bg-neutral-100 p-4">Configuration</h1>
         <div className="md:h-[calc(100vh-7rem)] overflow-y-auto p-4">
-          <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="flex flex-col"
+            onSubmit={handleSubmit(onSubmit)}
+            onChange={saveFormDataToLocalStorage}
+          >
             <div className="flex pb-8 gap-2">
               <Button type="submit" purpose="primary" text="Generate" />
               <Button
-                purpose="secondary"
+                purpose="danger"
                 text="Clear"
-                onClick={() => reset(clearedFormValues)}
+                onClick={() => {
+                  reset(clearedFormValues)
+                  saveFormDataToLocalStorage()
+                }}
               />
               <Button
-                purpose="secondary"
-                text="Default"
-                onClick={() => reset(defaultFormValues)}
+                purpose="danger"
+                text="Reset"
+                onClick={() => {
+                  reset(defaultFormValues)
+                  saveFormDataToLocalStorage()
+                }}
               />
             </div>
 
@@ -161,7 +181,9 @@ function Form({ onSubmit }: FormProps) {
                 <TextField
                   type="number"
                   placeholder="50"
-                  register={register('numWords', { valueAsNumber: true })}
+                  register={register('numWords', {
+                    valueAsNumber: true,
+                  })}
                 />
               </label>
 
